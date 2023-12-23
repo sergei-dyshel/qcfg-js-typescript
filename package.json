@@ -1,0 +1,19 @@
+{
+  "name": "@sergei-dyshel/typescript",
+  "version": "1.0.0",
+  "description": "Personal library for typescript",
+  "main": "src/index.ts",
+  "scripts": {
+    "watch": "npx tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergei-dyshel/qcfg-js-typescript.git"
+  },
+  "author": "Sergei Dyshel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sergei-dyshel/qcfg-js-typescript/issues"
+  },
+  "homepage": "https://github.com/sergei-dyshel/qcfg-js-typescript"
+}
