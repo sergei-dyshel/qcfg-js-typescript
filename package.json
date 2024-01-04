@@ -2,9 +2,15 @@
   "name": "@sergei-dyshel/typescript",
   "version": "1.0.0",
   "description": "Personal library for typescript",
-  "main": "src/index.ts",
+  "exports": {
+    "./tsconfig.json": "./tsconfig.json",
+    "./zod": "./src/zod.ts",
+    "./opt-schema": "./src/opt-schema.ts",
+    "./logging": "./src/logging/index.ts"
+  },
   "scripts": {
     "watch": "npx tsc --watch --noEmit --incremental",
+    "lint": "npx eslint --color --ext .ts src",
     "postinstall": "[[ -f link.config.json ]] && npx link || true"
   },
   "repository": {
