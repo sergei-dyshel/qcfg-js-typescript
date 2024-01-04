@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+ret_all=0
+for test in $(find . -name '*.test.ts'); do
+    echo "Testing $test"
+    qcfg-test $test
+    ret=$?
+    if [[ $ret -ne 0 ]]; then
+        ret_all=$ret
+    fi
+done
+
+exit $ret_all
