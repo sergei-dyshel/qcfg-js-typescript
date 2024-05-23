@@ -37,8 +37,8 @@
   "homepage": "https://github.com/sergei-dyshel/qcfg-js-typescript",
   "prettier": "@sergei-dyshel/prettier-config",
   "devDependencies": {
-    "@sergei-dyshel/eslint-config": "sergei-dyshel/eslint-config#955c871",
-    "@sergei-dyshel/prettier-config": "sergei-dyshel/prettier-config#7ae28175",
+    "@sergei-dyshel/eslint-config": "*",
+    "@sergei-dyshel/prettier-config": "*",
     "link": "^2.1.0",
     "tsx": "^4.10.5"
   },
