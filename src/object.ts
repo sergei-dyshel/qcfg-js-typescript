@@ -5,7 +5,7 @@ export function omitUndefinedValues<T extends object>(obj: T): T {
   return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as T;
 }
 
-/** Assign default values for missing or undefined values*/
+/** Assign default values for missing or undefined values */
 export function assignDefaults<T extends object>(obj: T, defaults: Partial<T>): T {
   return { ...defaults, ...omitUndefinedValues(obj) };
 }
