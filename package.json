@@ -13,7 +13,13 @@
     "./string": "./src/string.ts",
     "./types": "./src/types.ts",
     "./testing": "./src/testing.ts",
-    "./deep-merge": "./src/deep-merge.ts"
+    "./deep-merge": "./src/deep-merge.ts",
+    "./array": "./src/array.ts",
+    "./map": "./src/map.ts",
+    "./set": "./src/set.ts",
+    "./datetime": "./src/datetime.ts",
+    "./lock": "./src/lock.ts",
+    "./utils": "./src/utils/index.ts"
   },
   "bin": {
     "qcfg-test": "./scripts/qcfg-test",
@@ -42,8 +48,11 @@
     "tsx": "^4.10.1"
   },
   "dependencies": {
+    "@types/json-stable-stringify": "^1.0.34",
     "@types/node": "^18.18.6",
+    "async-mutex": "^0.4.0",
     "case-anything": "^2.1.13",
+    "json-stable-stringify": "^1.0.2",
     "ts-enum-util": "^4.0.2",
     "ts-pattern": "^5.1.1",
     "vscode-uri": "^3.0.8",

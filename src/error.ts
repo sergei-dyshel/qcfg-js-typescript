@@ -1,4 +1,5 @@
 export class LoggableError extends Error {
+  override name = "Error";
   data?: unknown[];
 
   constructor(
@@ -57,4 +58,14 @@ export function assertNotNull<T>(
   ...data: unknown[]
 ): asserts val is NonNullable<T> {
   assert(val !== undefined && val !== null, message, ...data);
+}
+
+export class AbortError extends Error {
+  constructor(cause?: unknown) {
+    super("User cancelled the operation", { cause });
+  }
+
+  static is(err: unknown): boolean {
+    return err instanceof AbortError || (err instanceof Error && AbortError.is(err.cause));
+  }
 }
