@@ -33,6 +33,7 @@ export class SetAdapter<T, A> implements Set<T> {
     return this.map.size;
   }
 
+   
   forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void {
     for (const value of this.values()) callbackfn.call(thisArg, value, value, this);
   }

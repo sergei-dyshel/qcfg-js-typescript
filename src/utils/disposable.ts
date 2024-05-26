@@ -1,5 +1,5 @@
 export interface DisposableLike {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   dispose: () => any;
 }
 

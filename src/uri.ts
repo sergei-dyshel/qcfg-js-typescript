@@ -1,5 +1,4 @@
-export { URI } from "vscode-uri";
-export { Utils as uriUtils } from "vscode-uri";
+export { URI, Utils as uriUtils } from "vscode-uri";
 
 /** Common interface to match both {@link URI} and VScode's URI */
 export interface UriLike {

@@ -95,7 +95,7 @@ export class UniversalMap<K, V, A> implements Map<K, V> {
     for (const entry of this.map.values()) yield entry.key;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
     for (const entry of this.map.values()) callbackfn.call(thisArg, entry.value, entry.key, this);
   }

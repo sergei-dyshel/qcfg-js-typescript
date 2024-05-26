@@ -6,7 +6,7 @@
  *   - https://github.com/sindresorhus/type-fest
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export type AnyFunction = (...args: any[]) => any;
 
 /** Something we can do `await on */

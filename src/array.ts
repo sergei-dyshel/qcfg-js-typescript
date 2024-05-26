@@ -56,7 +56,7 @@ export function sortUniq<T>(arr: T[], compareFn?: (a: T, b: T) => number) {
     if (compareFn(arr[i], arr[i - 1]) === 0) arr.splice(i, 1);
   }
   return arr;
-} /** @scope default . */
+} /** @scopeDefault . */
 
 export function filterNonNull<T>(arr: readonly T[]) {
   return arr.filter((x) => x !== undefined && x !== null) as NonNullable<T>[];

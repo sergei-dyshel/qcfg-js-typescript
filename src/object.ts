@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { defaultCompare } from "./array";
-import { PlainObject } from "./types";
+import type { PlainObject } from "./types";
 
 /** Return copy of object with undefined values removed */
 export function omitUndefinedValues<T extends object>(obj: T): T {

@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { AssertionError } from "./error";
 import { isPlainObject } from "./object";
-import { PlainObject } from "./types";
+import type { PlainObject } from "./types";
 
 export class DeepMergeError extends AssertionError {}
 
