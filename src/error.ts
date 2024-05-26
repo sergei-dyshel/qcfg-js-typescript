@@ -69,3 +69,27 @@ export class AbortError extends Error {
     return err instanceof AbortError || (err instanceof Error && AbortError.is(err.cause));
   }
 }
+
+export function assertInstanceOf<T, C extends T>(
+  value: T,
+  cls: Function & { prototype: C },
+  message?: string,
+  ...data: unknown[]
+): asserts value is C {
+  if (value instanceof cls) return;
+  if (!message) {
+    message = `Expected type '${cls.name}`;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const obj = value as any;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const objType = obj?.constructor?.name ?? typeof value;
+    message += `, got ${String(objType)}`;
+    if (data.length === 0) data = [value];
+  }
+  fail(message, ...data);
+}
+
+export function asInstanceOf<T, C extends T>(value: T, cls: Function & { prototype: C }): C {
+  assertInstanceOf(value, cls);
+  return value as C;
+}

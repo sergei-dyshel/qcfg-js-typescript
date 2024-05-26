@@ -6,7 +6,6 @@
  *   - https://github.com/sindresorhus/type-fest
  */
 
- 
 export type AnyFunction = (...args: any[]) => any;
 
 /** Something we can do `await on */
