@@ -1,6 +1,6 @@
-import { DefaultMap } from "@sergei-dyshel/typescript/map";
-import type { Awaitable } from "@sergei-dyshel/typescript/types";
 import { Mutex } from "async-mutex";
+import { DefaultMap } from "./map";
+import type { Awaitable } from "./types";
 
 export class Lock extends Mutex {
   async with<T>(f: () => Awaitable<T>) {
