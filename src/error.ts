@@ -33,7 +33,7 @@ export class LoggableError extends Error {
 }
 
 export class AssertionError extends LoggableError {
-  constructor(message: string = "Assertion failed", ...data: unknown[]) {
+  constructor(message = "Assertion failed", ...data: unknown[]) {
     super(message, { data });
   }
 }
