@@ -64,3 +64,14 @@ export function filterNonNull<T>(arr: readonly T[]) {
 export function mapAsync<T, P>(arr: readonly T[], f: (_: T, index: number) => Promise<P>) {
   return Promise.all(arr.map(f));
 }
+
+/** Create bbject with array elements as keys and values by applying function to each element */
+export function mapToObjectValues<K extends PropertyKey, V>(
+  arr: readonly K[],
+  f: (_: K) => V,
+): Record<K, V> {
+  // Object.fromEntries is typed as returning only string-valued keys
+  // but https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
+  // describes that it can create symbols as keys too
+  return Object.fromEntries(arr.map((k) => [k, f(k)])) as Record<K, V>;
+}

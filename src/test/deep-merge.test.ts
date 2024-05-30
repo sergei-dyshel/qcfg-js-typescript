@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { DeepMergeError, deepMerge } from "../deep-merge";
-import { Assert, Test } from "../testing";
+import { Assert } from "../error";
+import { Test } from "../testing";
 
 const someDate = new Date();
 const anotherDate = new Date();

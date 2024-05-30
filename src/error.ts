@@ -1,3 +1,6 @@
+import * as Assert from "node:assert/strict";
+export { Assert };
+
 export class LoggableError extends Error {
   override name = "Error";
   data?: unknown[];

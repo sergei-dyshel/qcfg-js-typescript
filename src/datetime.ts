@@ -1,18 +1,9 @@
+export { format as formatDate } from "date-fns";
+
 export function epochToDate(epoch: number) {
   const date = new Date(0);
   date.setUTCSeconds(epoch);
   return date;
-}
-
-export function formatDate(date: Date) {
-  const pad = (n: number) => n.toString().padStart(2, "0");
-  const month = pad(date.getMonth() + 1);
-  const day = pad(date.getDate());
-  const hour = pad(date.getHours());
-  const minute = pad(date.getMinutes());
-
-  /* XXX: format date as UTC */
-  return `${date.getFullYear()}-${month}-${day} ${hour}:${minute}`;
 }
 
 export function getPastDate(days: number) {
@@ -22,7 +13,7 @@ export function getPastDate(days: number) {
 
 export function dateToEpoch(date: Date): number {
   return date.getTime() / 1000;
-} // REFACTOR: move to datetime.ts
+}
 
 export function relativeTime(since: Date): string {
   const minute = 60;
