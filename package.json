@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Personal library for typescript",
   "exports": {
+    "./json": "./src/json.ts",
     "./enum": "./src/enum.ts",
     "./tsconfig.json": "./tsconfig.json",
     "./zod": "./src/zod.ts",
