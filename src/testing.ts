@@ -1,3 +1,3 @@
-import * as Test from "node:test";
+/** This file should be only imported by unit tests. */
 
-export { Test };
+export { test } from "node:test";
