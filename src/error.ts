@@ -1,4 +1,4 @@
-export { deepEqual as assertDeepEqual } from "node:assert/strict";
+export { deepEqual as assertDeepEqual, throws as assertThrows } from "node:assert/strict";
 
 export class LoggableError extends Error {
   override name = "Error";

@@ -31,7 +31,7 @@
     "lint": "qcfg-eslint",
     "format-check": "qcfg-prettier",
     "format-write": "qcfg-prettier-write",
-    "test": "find . -name '*.test.ts' -exec ./scripts/qcfg-test {} ';'"
+    "test": "qcfg-test-all"
   },
   "repository": {
     "type": "git",
