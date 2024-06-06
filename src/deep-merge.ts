@@ -1,10 +1,9 @@
 import { AssertionError } from "./error";
 import { isPlainObject } from "./object";
-import type { PlainObject } from "./types";
 
 export class DeepMergeError extends AssertionError {}
 
-export function deepMergeInto<T extends PlainObject>(target: T, ...sources: (T | undefined)[]) {
+export function deepMergeInto<T>(target: T, ...sources: (T | undefined)[]) {
   DeepMergeError.assert(isPlainObject(target), "Merge target must be a plain object", target);
   for (const source of sources) {
     if (source === undefined) continue;
@@ -22,12 +21,13 @@ export function deepMergeInto<T extends PlainObject>(target: T, ...sources: (T |
           sourceVal,
         );
         deepMergeInto(targetVal, sourceVal);
-      } else target[key] = source[key];
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      } else (target as any)[key] = source[key];
     }
   }
 }
 
-export function deepMerge<T extends PlainObject>(...sources: (T | undefined)[]): T {
+export function deepMerge<T>(...sources: (T | undefined)[]): T {
   const target = {} as T;
   deepMergeInto(target, ...sources);
   return target;
