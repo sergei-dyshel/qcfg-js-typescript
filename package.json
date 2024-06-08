@@ -28,6 +28,7 @@
   },
   "scripts": {
     "watch": "npx tsc --watch --noEmit --incremental",
+    "compile": "npx tsc --noEmit",
     "lint": "qcfg-eslint",
     "format-check": "qcfg-prettier",
     "format-write": "qcfg-prettier-write",

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import { DeepMergeError, deepMerge } from "../deep-merge";
 import { assertDeepEqual, assertThrows } from "../error";
 import { test } from "../testing";
@@ -34,4 +33,12 @@ test("deep nested", () => {
     ),
     { outer: { a: [1, 2, 3, 4], date: anotherDate } },
   );
+});
+
+test("no modifying source object", () => {
+  const a1 = { a: { b: 1 } };
+  const a2 = { a: { b: 2 } };
+  const merged = deepMerge(a1, a2);
+  assertDeepEqual(merged, { a: { b: 2 } });
+  assertDeepEqual(a1, { a: { b: 1 } });
 });

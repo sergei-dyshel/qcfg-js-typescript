@@ -1,4 +1,6 @@
-export { deepEqual as assertDeepEqual, throws as assertThrows } from "node:assert/strict";
+import { deepEqual } from "node:assert";
+
+export { rejects as assertRejects, throws as assertThrows } from "node:assert/strict";
 
 export class LoggableError extends Error {
   override name = "Error";
@@ -52,6 +54,10 @@ export function assert(
   if (!condition) {
     fail(message, ...data);
   }
+}
+
+export function assertDeepEqual<T>(actual: T, expected: T) {
+  deepEqual(actual, expected);
 }
 
 export function formatError(error: unknown): string {

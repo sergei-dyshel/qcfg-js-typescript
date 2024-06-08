@@ -9,7 +9,8 @@
     // TODO: try to remove in future versions
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true, // needed for webpack

@@ -7,22 +7,28 @@ export function deepMergeInto<T>(target: T, ...sources: (T | undefined)[]) {
   DeepMergeError.assert(isPlainObject(target), "Merge target must be a plain object", target);
   for (const source of sources) {
     if (source === undefined) continue;
+    if (target === source) throw new DeepMergeError("Can't merge into itself");
     DeepMergeError.assert(isPlainObject(source), "Merge source must be a plain object", source);
     for (const key in source) {
       const sourceVal = source[key];
-      const targetVal = target[key];
+      let targetVal = target[key];
       if (sourceVal === undefined) continue;
       if (Array.isArray(targetVal) && Array.isArray(sourceVal)) {
         (targetVal as unknown[]).push(...(sourceVal as unknown[]));
-      } else if (isPlainObject(targetVal)) {
-        DeepMergeError.assert(
-          isPlainObject(sourceVal),
-          "Can merge only plain object into plain object",
-          sourceVal,
-        );
+      } else if (isPlainObject(sourceVal)) {
+        if (targetVal === undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          (target as any)[key] = targetVal = {};
+        } else if (!isPlainObject(targetVal))
+          throw new DeepMergeError("Can not merge plain object into non-plain object", sourceVal);
         deepMergeInto(targetVal, sourceVal);
+      } else {
+        // source value is not a plain object, so just assign
+        if (isPlainObject(targetVal))
+          throw new DeepMergeError("Can not merge non-plain object into plain object", sourceVal);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      } else (target as any)[key] = source[key];
+        (target as any)[key] = sourceVal;
+      }
     }
   }
 }
