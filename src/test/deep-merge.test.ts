@@ -5,27 +5,27 @@ import { test } from "../testing";
 const someDate = new Date();
 const anotherDate = new Date();
 
-test("override primitive property", () => {
+void test("override primitive property", () => {
   assertDeepEqual(deepMerge({ a: 1 }, { a: 2 }), { a: 2 });
 });
 
-test("override property of non-plain object type", () => {
+void test("override property of non-plain object type", () => {
   assertDeepEqual(deepMerge({ date: someDate }, { date: anotherDate }), { date: anotherDate });
 });
 
-test("override property of plain object type with non-plain ojbect", () => {
+void test("override property of plain object type with non-plain ojbect", () => {
   assertThrows(() => deepMerge({ date: {} }, { date: someDate }), DeepMergeError);
 });
 
-test("override with undefined", () => {
+void test("override with undefined", () => {
   assertDeepEqual(deepMerge({ a: 1 }, { a: undefined }), { a: 1 });
 });
 
-test("merge arrays", () => {
+void test("merge arrays", () => {
   assertDeepEqual(deepMerge({ a: [1, 2] }, { a: [3, 4] }), { a: [1, 2, 3, 4] });
 });
 
-test("deep nested", () => {
+void test("deep nested", () => {
   assertDeepEqual(
     deepMerge(
       { outer: { a: [1, 2], date: someDate } },
@@ -35,7 +35,7 @@ test("deep nested", () => {
   );
 });
 
-test("no modifying source object", () => {
+void test("no modifying source object", () => {
   const a1 = { a: { b: 1 } };
   const a2 = { a: { b: 2 } };
   const merged = deepMerge(a1, a2);

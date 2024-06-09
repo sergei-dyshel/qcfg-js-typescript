@@ -61,7 +61,7 @@ export function sortUniq<T>(arr: T[], compareFn?: (a: T, b: T) => number) {
 export function filterNonNull<T>(arr: readonly T[]) {
   return arr.filter((x) => x !== undefined && x !== null) as NonNullable<T>[];
 }
-export function mapAsync<T, P>(arr: readonly T[], f: (_: T, index: number) => Promise<P>) {
+export function mapAsync<T, P>(arr: readonly T[], f: (_: T, index: number) => Thenable<P>) {
   return Promise.all(arr.map(f));
 }
 
@@ -74,4 +74,32 @@ export function mapToObjectValues<K extends PropertyKey, V>(
   // but https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
   // describes that it can create symbols as keys too
   return Object.fromEntries(arr.map((k) => [k, f(k)])) as Record<K, V>;
+}
+
+export function zipArrays<T1, T2>(a: readonly T1[], b: readonly T2[]): Array<[T1, T2]> {
+  return a.map((k, i) => [k, b[i]]);
+}
+
+/**
+ * Map array through function and filter out those returned {@link MAP_UNDEFINED}. Return array of
+ * [value, mapped value] pairs.
+ */
+export async function mapSomeAsyncAndZip<V, R>(
+  arr: readonly V[],
+  func: (v: V) => Thenable<R | undefined>,
+): Promise<Array<[V, R]>> {
+  const results: Array<R | undefined> = await mapAsync(arr, func);
+  return zipArrays(arr, results).filter((tuple) => tuple[1] !== undefined) as Array<[V, R]>;
+}
+
+/**
+ * Map array through function and filter out those returned MAP_UNDEFINED. Return array of mapped
+ * values.
+ */
+export async function mapSomeAsync<V, R>(
+  arr: readonly V[],
+  func: (v: V) => Promise<R | undefined>,
+): Promise<R[]> {
+  const zip = await mapSomeAsyncAndZip(arr, func);
+  return zip.map((pair) => pair[1]);
 }
