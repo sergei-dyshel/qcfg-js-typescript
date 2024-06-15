@@ -1,4 +1,5 @@
 import { deepEqual } from "node:assert";
+import type { AsyncFunction, SyncFunction } from "./types";
 
 export { rejects as assertRejects, throws as assertThrows } from "node:assert/strict";
 
@@ -60,10 +61,25 @@ export function assertDeepEqual<T>(actual: T, expected: T) {
   deepEqual(actual, expected);
 }
 
-export function formatError(error: unknown): string {
+/** Produce single line error message, optionally including cause */
+export function formatError(
+  error: unknown,
+  options?: {
+    /** Hide error class name */
+    hideName?: boolean;
+
+    /** Recursively include all cause errors */
+    showCause?: boolean;
+  },
+): string {
   if (error instanceof Error) {
-    if (error.name === "Error") return error.message;
-    else return `${error.name}: ${error.message}`;
+    let msg =
+      error.name === "Error" || !options?.hideName
+        ? error.message
+        : `${error.name}: ${error.message}`;
+    if (error.cause && options?.showCause)
+      msg += ", caused by: " + formatError(error.cause, options);
+    return msg;
   }
   return String(error);
 }
@@ -108,4 +124,25 @@ export function assertInstanceOf<T, C extends T>(
 export function asInstanceOf<T, C extends T>(value: T, cls: Function & { prototype: C }): C {
   assertInstanceOf(value, cls);
   return value as C;
+}
+
+export function wrapWithCatch<T, R, F extends AsyncFunction<T>>(
+  func: F,
+  catchHandler: (err: unknown) => R,
+): (...funcArgs: Parameters<F>) => Promise<T | R> | R;
+export function wrapWithCatch<T, R, F extends SyncFunction<T>>(
+  func: F,
+  catchHandler: (err: unknown) => R,
+): (...funcArgs: Parameters<F>) => T | R;
+
+export function wrapWithCatch(func: Function, catchHandler: Function) {
+  return async (...args: unknown[]) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return await func(...args);
+    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return catchHandler(err);
+    }
+  };
 }

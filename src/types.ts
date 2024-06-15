@@ -8,6 +8,17 @@
 
 export type AnyFunction = (...args: any[]) => any;
 
+export type AsyncFunction<T = unknown> = (...args: unknown[]) => Promise<T>;
+
+/**
+ * Resolves only when for non-promise types.
+ *
+ * Usefull for type signatures for type functions.
+ */
+export type NotPromise<T> = T extends Promise<unknown> ? never : T;
+
+export type SyncFunction<T = unknown> = (...args: unknown[]) => NotPromise<T>;
+
 /** Something we can do `await on */
 export type Awaitable<T> = T | Promise<T>;
 
