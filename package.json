@@ -60,7 +60,8 @@
     "ts-enum-util": "^4.0.2",
     "ts-pattern": "^5.1.1",
     "vscode-uri": "^3.0.8",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zod-to-json-schema": "^3.20.2"
   },
   "peerDependencies": {
     "typescript": "~5.4.5"

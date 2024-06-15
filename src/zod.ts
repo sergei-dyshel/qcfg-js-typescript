@@ -1,9 +1,10 @@
 import jsonStableStringify from "json-stable-stringify";
 import { z as zod } from "zod";
+import zodToJsonSchema from "zod-to-json-schema";
 import { MapAdapter } from "./map";
 import { SetAdapter } from "./set";
 
-export { zod };
+export { zod, zodToJsonSchema };
 
 export function schemaStringify<T extends zod.ZodTypeAny>(schema: T, val: zod.infer<T>) {
   return jsonStableStringify(schema.parse(val));
