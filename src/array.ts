@@ -61,7 +61,7 @@ export function sortUniq<T>(arr: T[], compareFn?: (a: T, b: T) => number) {
 export function filterNonNull<T>(arr: readonly T[]) {
   return arr.filter((x) => x !== undefined && x !== null) as NonNullable<T>[];
 }
-export function mapAsync<T, P>(arr: readonly T[], f: (_: T, index: number) => Thenable<P>) {
+export function mapAsync<T, P>(arr: readonly T[], f: (_: T, index: number) => Promise<P>) {
   return Promise.all(arr.map(f));
 }
 
@@ -86,7 +86,7 @@ export function zipArrays<T1, T2>(a: readonly T1[], b: readonly T2[]): Array<[T1
  */
 export async function mapSomeAsyncAndZip<V, R>(
   arr: readonly V[],
-  func: (v: V) => Thenable<R | undefined>,
+  func: (v: V) => Promise<R | undefined>,
 ): Promise<Array<[V, R]>> {
   const results: Array<R | undefined> = await mapAsync(arr, func);
   return zipArrays(arr, results).filter((tuple) => tuple[1] !== undefined) as Array<[V, R]>;
