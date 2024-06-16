@@ -9,4 +9,13 @@ export interface UriLike {
   readonly fragment: string;
 
   toString(skipEncoding?: boolean): string;
+
+  get fsPath(): string;
+  with(change: {
+    scheme?: string;
+    authority?: string | null;
+    path?: string | null;
+    query?: string | null;
+    fragment?: string | null;
+  }): UriLike;
 }
