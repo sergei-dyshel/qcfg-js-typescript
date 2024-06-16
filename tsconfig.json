@@ -5,6 +5,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "out",
+    "rootDir": "src",
     "lib": ["ES2023", "DOM"],
     // TODO: try to remove in future versions
     "skipLibCheck": true,

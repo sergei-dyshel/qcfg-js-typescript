@@ -57,6 +57,8 @@
     "case-anything": "^2.1.13",
     "date-fns": "^3.6.0",
     "json-stable-stringify": "^1.0.2",
+    "linkify-string": "^4.1.1",
+    "ts-dedent": "^2.2.0",
     "ts-enum-util": "^4.0.2",
     "ts-pattern": "^5.1.1",
     "vscode-uri": "^3.0.8",
