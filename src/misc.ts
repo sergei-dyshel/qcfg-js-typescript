@@ -1,9 +1,3 @@
-export * from "./disposable";
-
-export * as Html from "./html";
-
-export * as Markdown from "./markdown";
-
 export function gitShortHash(hash: string) {
   return hash.substring(0, 8);
 }

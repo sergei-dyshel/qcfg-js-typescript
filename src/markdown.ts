@@ -1,5 +1,5 @@
 import * as marked from "marked";
-import type { UriLike } from "../uri";
+import type { UriLike } from "./uri";
 
 export function render(markdown: string) {
   const html = marked.marked.parse(markdown, { gfm: true });

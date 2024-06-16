@@ -1,10 +1,10 @@
+import { gitShortHash } from "@sergei-dyshel/typescript";
 import { formatDate } from "@sergei-dyshel/typescript/datetime";
 import * as fail from "@sergei-dyshel/typescript/error";
 import type { UriLike } from "@sergei-dyshel/typescript/uri";
-import { gitShortHash } from "@sergei-dyshel/typescript/utils";
 import linkifyStr from "linkify-string";
 import { randomBytes } from "node:crypto";
-import { dedent } from "../string";
+import { dedent } from "./string";
 
 export function escape(str: string) {
   return str
