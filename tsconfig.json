@@ -6,6 +6,8 @@
     "moduleResolution": "NodeNext",
     "outDir": "out",
     "rootDir": "src",
+    "incremental": true,
+    "tsBuildInfoFile": "out/tsconfig.tsbuildinfo",
     "lib": ["ES2023", "DOM"],
     // TODO: try to remove in future versions
     "skipLibCheck": true,

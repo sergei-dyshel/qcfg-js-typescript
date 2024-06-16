@@ -27,8 +27,8 @@
     "qcfg-test-all": "./scripts/qcfg-test-all"
   },
   "scripts": {
-    "watch": "npx tsc --watch --noEmit --incremental",
-    "compile": "npx tsc --noEmit --incremental",
+    "watch": "npx tsc --watch --noEmit",
+    "compile": "npx tsc --noEmit",
     "lint": "qcfg-eslint",
     "format-check": "qcfg-prettier",
     "format-write": "qcfg-prettier-write",
