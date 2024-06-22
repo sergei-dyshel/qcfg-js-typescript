@@ -1,6 +1,8 @@
 import jsonStableStringify from "json-stable-stringify";
 import { z as zod } from "zod";
 import zodToJsonSchema from "zod-to-json-schema";
+import { fromZodError } from "zod-validation-error";
+import { registerErrorFormatter } from "./error";
 import { MapAdapter } from "./map";
 import { SetAdapter } from "./set";
 
@@ -36,3 +38,5 @@ export class SchemaSet<T extends zod.ZodTypeAny> extends SetAdapter<zod.infer<T>
     );
   }
 }
+
+registerErrorFormatter(zod.ZodError, (err: zod.ZodError) => fromZodError(err).toString());

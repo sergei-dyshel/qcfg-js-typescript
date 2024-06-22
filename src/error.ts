@@ -61,6 +61,25 @@ export function assertDeepEqual<T>(actual: T, expected: T) {
   deepEqual(actual, expected);
 }
 
+const errorFormatters: {
+  cls: new (...args: unknown[]) => Error;
+  format: (error: any) => string;
+}[] = [];
+
+export function registerErrorFormatter<E extends Error, C extends new (...args: any[]) => E>(
+  cls: C,
+  format: (error: E) => string,
+) {
+  errorFormatters.push({ cls, format });
+}
+
+function errorMessage(error: Error): string {
+  for (const { cls, format } of errorFormatters) {
+    if (error instanceof cls) return format(error);
+  }
+  return error.message;
+}
+
 /** Produce single line error message, optionally including cause */
 export function formatError(
   error: unknown,
@@ -73,10 +92,8 @@ export function formatError(
   },
 ): string {
   if (error instanceof Error) {
-    let msg =
-      error.name === "Error" || !options?.hideName
-        ? error.message
-        : `${error.name}: ${error.message}`;
+    const errMsg = errorMessage(error);
+    let msg = error.name === "Error" || !options?.hideName ? errMsg : `${error.name}: ${errMsg}`;
     if (error.cause && options?.showCause)
       msg += ", caused by: " + formatError(error.cause, options);
     return msg;
