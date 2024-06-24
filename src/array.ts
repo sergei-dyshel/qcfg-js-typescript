@@ -81,8 +81,8 @@ export function zipArrays<T1, T2>(a: readonly T1[], b: readonly T2[]): Array<[T1
 }
 
 /**
- * Map array through function and filter out those returned {@link MAP_UNDEFINED}. Return array of
- * [value, mapped value] pairs.
+ * Map array through function and filter out those returned `undefined`. Return array of [value,
+ * mapped value] pairs.
  */
 export async function mapSomeAsyncAndZip<V, R>(
   arr: readonly V[],
