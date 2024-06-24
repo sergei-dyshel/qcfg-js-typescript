@@ -1,3 +1,5 @@
+import type { URI } from "vscode-uri";
+
 /** Common interface to match both {@link URI} and VScode's URI */
 export interface UriLike {
   readonly scheme: string;

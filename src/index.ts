@@ -1,3 +1,4 @@
+export * from "./dataclass";
 export * from "./disposable";
 export * as Html from "./html";
 export * as Markdown from "./markdown";

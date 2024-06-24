@@ -4,7 +4,6 @@ import type { AsyncFunction, SyncFunction } from "./types";
 export { rejects as assertRejects, throws as assertThrows } from "node:assert/strict";
 
 export class LoggableError extends Error {
-  override name = "Error";
   data?: unknown[];
 
   constructor(
@@ -15,15 +14,12 @@ export class LoggableError extends Error {
     },
   ) {
     super(message, { cause: options?.cause });
+    this.name = this.constructor.name;
     this.data = options?.data;
   }
 
-  static new(message: string, ...data: unknown[]) {
-    return new LoggableError(message, { data });
-  }
-
   static wrap(cause: unknown, message: string, ...data: unknown[]) {
-    return new LoggableError(message, { cause, data });
+    return new this(message, { cause, data });
   }
 
   static assert(

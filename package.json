@@ -56,6 +56,7 @@
     "@types/node": "^18.18.6",
     "async-mutex": "^0.4.0",
     "case-anything": "^2.1.13",
+    "dataclass": "^2.1.1",
     "date-fns": "^3.6.0",
     "json-stable-stringify": "^1.0.2",
     "linkify-string": "^4.1.1",
