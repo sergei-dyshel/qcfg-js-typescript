@@ -25,6 +25,7 @@
   },
   "bin": {
     "qcfg-test": "./scripts/qcfg-test",
+    "qcfg-dpdm": "./scripts/qcfg-dpdm",
     "qcfg-test-all": "./scripts/qcfg-test-all"
   },
   "scripts": {
@@ -33,7 +34,8 @@
     "lint": "qcfg-eslint",
     "format-check": "qcfg-prettier",
     "format-write": "qcfg-prettier-write",
-    "test": "qcfg-test-all"
+    "test": "qcfg-test-all",
+    "dpdm": "qcfg-dpdm"
   },
   "repository": {
     "type": "git",
@@ -49,6 +51,7 @@
   "devDependencies": {
     "@sergei-dyshel/eslint-config": "*",
     "@sergei-dyshel/prettier-config": "*",
+    "dpdm": "^3.14.0",
     "tsx": "^4.10.1"
   },
   "dependencies": {
@@ -58,6 +61,7 @@
     "case-anything": "^2.1.13",
     "dataclass": "^2.1.1",
     "date-fns": "^3.6.0",
+    "jsonc-parser": "^3.2.1",
     "json-stable-stringify": "^1.0.2",
     "linkify-string": "^4.1.1",
     "marked": "^4.2.12",

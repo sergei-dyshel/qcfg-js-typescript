@@ -16,13 +16,21 @@
     "inlineSources": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "esModuleInterop": true, // needed for webpack
+    "esModuleInterop": true, // needed for bundlers
     "allowSyntheticDefaultImports": true, // needed for webpack
     "strict": true,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "resolveJsonModule": true,
-    "strictPropertyInitialization": true
-  }
+    "strictPropertyInitialization": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "plugins": [
+      // { "name": "eslint-plugin-export-scope", "strictMode": false },
+      { "name": "eslint-plugin-import-access" }
+    ]
+  },
+  "exclude": ["node_modules", ".vscode-test"]
 }

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+shopt -s globstar
+
+dpdm --skip-dynamic-imports tree --no-warning --no-tree src/**/*.ts
