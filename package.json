@@ -55,6 +55,7 @@
     "tsx": "^4.10.1"
   },
   "dependencies": {
+    "@sergei-dyshel/typescript": "*",
     "@types/json-stable-stringify": "^1.0.34",
     "@types/node": "^18.18.6",
     "async-mutex": "^0.4.0",
