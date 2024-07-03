@@ -10,11 +10,6 @@ export function omitUndefinedValues<T extends object>(obj: T): T {
   return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as T;
 }
 
-/** Assign default values for missing or undefined values */
-export function assignDefaults<T extends object>(obj: T, defaults: Partial<T>): T {
-  return { ...defaults, ...omitUndefinedValues(obj) };
-}
-
 /** Object is plain Javascript object, not a class instance */
 export function isPlainObject(obj: unknown): obj is PlainObject {
   if (!(typeof obj === "object")) return false;

@@ -1,4 +1,4 @@
-import { DeepMergeError, deepMerge } from "../deep-merge";
+import { DeepMergeError, deepMerge, deepMergeDefaults } from "../deep-merge";
 import { assertDeepEqual, assertThrows } from "../error";
 import { test } from "../testing";
 
@@ -41,4 +41,12 @@ void test("no modifying source object", () => {
   const merged = deepMerge(a1, a2);
   assertDeepEqual(merged, { a: { b: 2 } });
   assertDeepEqual(a1, { a: { b: 1 } });
+});
+
+void test("assign defaults", () => {
+  const target: any = { a: { b: 1 }, c: { b: undefined }, d: {} };
+  const source: any = { a: { b: 2 }, c: { b: 3 }, d: { b: 1 } };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const merged = deepMergeDefaults(target, source);
+  assertDeepEqual(merged, { a: { b: 1 }, c: { b: 3 }, d: { b: 1 } });
 });
