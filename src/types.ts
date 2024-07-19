@@ -36,3 +36,18 @@ export type RecordEntry<T> = T extends Record<infer K, infer V> ? [K, V] : never
 
 /** Array element type */
 export type ElementType<T> = T extends Array<infer E> ? E : never;
+
+/**
+ * Useful for making sure value's type extends given type without loosing type information
+ *
+ * ```ts
+ * const x = extendsType<string>()("hello");
+ * // const x: "hello"
+ *
+ * const y = extendsType<string>()(123);
+ * // error: Argument of type 'number' is not assignable to parameter of type 'string'
+ * ```
+ */
+export function extendsType<T>() {
+  return <E extends T>(value: E) => value;
+}
