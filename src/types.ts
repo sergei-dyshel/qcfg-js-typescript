@@ -51,3 +51,8 @@ export type ElementType<T> = T extends Array<infer E> ? E : never;
 export function extendsType<T>() {
   return <E extends T>(value: E) => value;
 }
+
+/**
+ * Extracts only keys of type T that are assignable to type `string`.
+ */
+export type StringKeyOf<T> = Extract<keyof T, string>;
