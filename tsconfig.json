@@ -32,5 +32,9 @@
       { "name": "eslint-plugin-import-access" }
     ]
   },
+  "ts-node": {
+    "files": true
+  },
+  "include": ["${configDir}/src/**/*.ts"],
   "exclude": ["node_modules", ".vscode-test"]
 }
