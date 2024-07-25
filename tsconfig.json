@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     // https://stackoverflow.com/questions/59787574/typescript-tsconfig-settings-for-node-js-12/59787575#59787575
-    "target": "ES2022",
+    "target": "ES2023",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "outDir": "out",
-    "rootDir": "src",
+    "outDir": "${configDir}/out",
+    "rootDir": "${configDir}/src",
     "incremental": true,
-    "tsBuildInfoFile": "out/tsconfig.tsbuildinfo",
+    "tsBuildInfoFile": "${configDir}/out/tsconfig.tsbuildinfo",
     "lib": ["ES2023", "DOM"],
     // TODO: try to remove in future versions
     "skipLibCheck": true,
