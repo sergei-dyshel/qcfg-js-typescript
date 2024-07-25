@@ -28,8 +28,8 @@
     "qcfg-test-all": "./scripts/qcfg-test-all"
   },
   "scripts": {
-    "watch": "npx tsc --watch --noEmit",
-    "compile": "npx tsc --noEmit",
+    "watch": "tsc --watch --noEmit",
+    "compile": "tsc --noEmit",
     "lint": "qcfg-eslint",
     "format-check": "qcfg-prettier",
     "format-write": "qcfg-prettier-write",
