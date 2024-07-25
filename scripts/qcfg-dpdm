@@ -2,4 +2,4 @@
 
 shopt -s globstar
 
-dpdm --skip-dynamic-imports tree --no-warning --no-tree src/**/*.ts
+dpdm --skip-dynamic-imports tree --no-warning --transform --no-tree src/**/*.ts
