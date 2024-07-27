@@ -34,7 +34,8 @@
     "format-check": "qcfg-prettier",
     "format-write": "qcfg-prettier-write",
     "test": "qcfg-test-all",
-    "dpdm": "qcfg-dpdm"
+    "dpdm": "qcfg-dpdm",
+    "just": "just"
   },
   "repository": {
     "type": "git",
@@ -51,6 +52,7 @@
     "@sergei-dyshel/eslint-config": "*",
     "@sergei-dyshel/prettier-config": "*",
     "dpdm": "^3.14.0",
+    "just-install": "^2.0.1",
     "tsx": "^4.10.1"
   },
   "dependencies": {
