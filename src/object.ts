@@ -76,3 +76,7 @@ export function sortObjectKeys(obj: object) {
     Object.entries(obj).sort(([key1, _1], [key2, _2]) => defaultCompare(key1, key2)),
   );
 }
+
+export function objectKeys<T extends Record<string, any>>(obj: T): (keyof T)[] {
+  return Object.keys(obj) as (keyof T)[];
+}
