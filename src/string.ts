@@ -20,6 +20,13 @@ export function removePrefix(str: string, prefix: string): string {
   return str;
 }
 
+export function removeSuffix(str: string, suffix: string): string {
+  if (str.endsWith(suffix)) {
+    return str.substring(0, str.length - suffix.length);
+  }
+  return str;
+}
+
 export function upperCaseFirstLetter(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }

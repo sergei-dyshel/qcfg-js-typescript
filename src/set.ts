@@ -1,3 +1,7 @@
+export function* mapSet<T, V>(set: Set<T>, fn: (value: T) => V) {
+  for (const value of set) yield fn(value);
+}
+
 // Copied from lib.esnext.collection.d.ts to resolve TS errors
 interface ReadonlySetLike<T> {
   /**
