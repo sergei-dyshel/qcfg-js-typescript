@@ -23,14 +23,11 @@
     "./utils": "./src/utils/index.ts"
   },
   "bin": {
-    "qcfg-test": "./scripts/qcfg-test",
-    "qcfg-test-all": "./scripts/qcfg-test-all"
+    "qcfg-test": "./scripts/qcfg-test"
   },
   "scripts": {
     "watch": "tsc --watch --noEmit",
-    "compile": "tsc --noEmit",
-    "test": "qcfg-test-all",
-    "just": "just"
+    "compile": "tsc --noEmit"
   },
   "repository": {
     "type": "git",

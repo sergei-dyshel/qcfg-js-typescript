@@ -5,14 +5,9 @@ dpdm:
     shopt -s globstar
     dpdm --exit-code circular:1 --skip-dynamic-imports tree --no-warning --transform --no-tree src/**/*.ts
 
-# Run specific test file
-[no-cd]
-test +args:
-    node --import tsx --test {{args}}
-
 # Run all tests in package
 [no-cd]
-test-all:
+test:
     #!/usr/bin/env bash
     ret_all=0
     for test in $(find . -name '*.test.ts'); do
