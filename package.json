@@ -52,7 +52,7 @@
     "@sergei-dyshel/eslint-config": "*",
     "@sergei-dyshel/prettier-config": "*",
     "dpdm": "^3.14.0",
-    "just-install": "^2.0.1",
+    "just-install": "^2.0.2",
     "tsx": "^4.10.1"
   },
   "dependencies": {
