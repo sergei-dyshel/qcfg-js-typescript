@@ -23,3 +23,7 @@ test:
         fi
     done
     exit $ret_all
+
+[no-cd]
+compile:
+    tsc --noEmit

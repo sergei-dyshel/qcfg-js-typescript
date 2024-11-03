@@ -26,8 +26,7 @@
     "qcfg-test": "./scripts/qcfg-test"
   },
   "scripts": {
-    "watch": "tsc --watch --noEmit",
-    "compile": "tsc --noEmit"
+    "watch": "tsc --watch --noEmit"
   },
   "repository": {
     "type": "git",
