@@ -1,12 +1,9 @@
-import? '../../node_modules/@sergei-dyshel/eslint-config/export.just'
-import? './node_modules/@sergei-dyshel/eslint-config/export.just'
-
 # Run cyclic dependency checker on all files
 [no-cd]
 dpdm:
     #!/usr/bin/env bash
     shopt -s globstar
-    dpdm --skip-dynamic-imports tree --no-warning --transform --no-tree src/**/*.ts
+    dpdm --exit-code circular:1 --skip-dynamic-imports tree --no-warning --transform --no-tree src/**/*.ts
 
 # Run specific test file
 [no-cd]

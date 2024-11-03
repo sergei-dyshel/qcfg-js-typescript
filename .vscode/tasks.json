@@ -13,12 +13,6 @@
       "presentation": {
         "reveal": "never"
       }
-    },
-    {
-      "type": "npm",
-      "script": "lint",
-      "problemMatcher": ["$eslint-stylish"],
-      "label": "npm: lint"
     }
   ]
 }

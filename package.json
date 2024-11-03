@@ -24,17 +24,12 @@
   },
   "bin": {
     "qcfg-test": "./scripts/qcfg-test",
-    "qcfg-dpdm": "./scripts/qcfg-dpdm",
     "qcfg-test-all": "./scripts/qcfg-test-all"
   },
   "scripts": {
     "watch": "tsc --watch --noEmit",
     "compile": "tsc --noEmit",
-    "lint": "qcfg-eslint",
-    "format-check": "qcfg-prettier",
-    "format-write": "qcfg-prettier-write",
     "test": "qcfg-test-all",
-    "dpdm": "qcfg-dpdm",
     "just": "just"
   },
   "repository": {
