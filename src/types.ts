@@ -35,7 +35,7 @@ export type ValueOf<T> = T[keyof T];
 export type RecordEntry<T> = T extends Record<infer K, infer V> ? [K, V] : never;
 
 /** Array element type */
-export type ElementType<T> = T extends Array<infer E> ? E : never;
+export type ElementType<T> = T extends ReadonlyArray<infer E> ? E : never;
 
 /**
  * Useful for making sure value's type extends given type without loosing type information
