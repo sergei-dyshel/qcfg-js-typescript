@@ -30,3 +30,12 @@ export function removeSuffix(str: string, suffix: string): string {
 export function upperCaseFirstLetter(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
+
+/**
+ * Like {@link dedent} but also replaces newlines with spaces.
+ *
+ * Useful for long text which will be reformatted anyway, e.g. by cmd-line parser.
+ */
+export function dedentAndJoin(s: TemplateStringsArray | string, ...args: unknown[]) {
+  return dedent(s, ...args).replace(/\n/g, " ");
+}
