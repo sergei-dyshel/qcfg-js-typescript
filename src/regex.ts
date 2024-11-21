@@ -19,3 +19,14 @@ export class RegExpWithNamedGroups<S extends string> extends RegExp {
 interface RegExpMatchedGroups<S extends string> extends RegExpExecArray {
   groups?: ExtractGroupNames<S>;
 }
+
+/**
+ * Escape special RexExp characters in string
+ *
+ * Implementation taken from https://github.com/lodash/lodash/blob/4.17.15/lodash.js#L14273.
+ */
+export function escapeRegExp(s: string) {
+  const reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+  const reHasRegExpChar = RegExp(reRegExpChar.source);
+  return s && reHasRegExpChar.test(s) ? s.replace(reRegExpChar, "\\$&") : s;
+}
