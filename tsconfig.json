@@ -38,5 +38,5 @@
     "files": true
   },
   "include": ["${configDir}/src/**/*.ts"],
-  "exclude": ["node_modules", ".vscode-test"]
+  "exclude": ["$(configDir)/node_modules", "$(configDir)/.vscode-test"]
 }
