@@ -1,5 +1,5 @@
 import dedent from "ts-dedent";
-export * from "case-anything";
+export { camelCase, kebabCase, snakeCase } from "case-anything";
 
 export { dedent };
 
