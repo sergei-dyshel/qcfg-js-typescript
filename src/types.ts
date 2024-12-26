@@ -56,3 +56,15 @@ export function extendsType<T>() {
  * Extracts only keys of type T that are assignable to type `string`.
  */
 export type StringKeyOf<T> = Extract<keyof T, string>;
+
+export type SnakeToCamelCase<S extends string> = S extends `${infer T}_${infer U}`
+  ? `${T}${Capitalize<SnakeToCamelCase<U>>}`
+  : S;
+
+export type KebabToCamelCase<S extends string> = S extends `${infer T}-${infer U}`
+  ? `${T}${Capitalize<KebabToCamelCase<U>>}`
+  : S;
+
+export type KebabToCamelCaseKeys<T> = {
+  [P in StringKeyOf<T> as KebabToCamelCase<P>]: T[P];
+};
