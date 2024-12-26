@@ -47,6 +47,15 @@ export function mapValues<V, R>(
   return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, func(key, value)]));
 }
 
+export function mapKeys<K extends string, V, R extends string>(
+  obj: Record<K, V>,
+  func: (k: K, v: V) => R,
+): Record<R, V> {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [func(key as K, value as V), value]),
+  ) as Record<R, V>;
+}
+
 /** Map both keys and values of object. */
 export function mapEntries<K1 extends string, V1, K2 extends string, R2>(
   obj: Record<K1, V1>,
