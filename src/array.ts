@@ -61,8 +61,17 @@ export function sortUniq<T>(arr: T[], compareFn?: (a: T, b: T) => number) {
 export function filterNonNull<T>(arr: readonly T[]) {
   return arr.filter((x) => x !== undefined && x !== null) as NonNullable<T>[];
 }
+
 export function mapAsync<T, P>(arr: readonly T[], f: (_: T, index: number) => Promise<P>) {
   return Promise.all(arr.map(f));
+}
+
+export async function filterAsync<T>(
+  arr: readonly T[],
+  f: (_: T, index: number) => Promise<boolean>,
+) {
+  const mapped = await mapAsync(arr, async (x, i) => [x, await f(x, i)] as const);
+  return mapped.filter(([_, ok]) => ok).map(([x, _]) => x);
 }
 
 /** Create bbject with array elements as keys and values by applying function to each element */
