@@ -19,7 +19,6 @@
     "./map": "./src/map.ts",
     "./set": "./src/set.ts",
     "./datetime": "./src/datetime.ts",
-    "./lock": "./src/lock.ts",
     "./utils": "./src/utils/index.ts"
   },
   "bin": {

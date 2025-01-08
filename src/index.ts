@@ -2,6 +2,7 @@ export * from "./dataclass";
 export * from "./disposable";
 export * as Html from "./html";
 export * from "./json";
+export * from "./lock";
 export * as Markdown from "./markdown";
 export * from "./misc";
 export * from "./regex";
