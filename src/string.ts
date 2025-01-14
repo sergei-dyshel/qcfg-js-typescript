@@ -27,6 +27,15 @@ export function removeSuffix(str: string, suffix: string): string {
   return str;
 }
 
+/** Split out suffix matching regexp */
+export function splitSuffixRegexp(str: string, suffix: RegExp): [string, string | undefined] {
+  const match = new RegExp(`^(.*)(${suffix.source})$`).exec(str);
+  if (match) {
+    return [match[1], match[2]];
+  }
+  return [str, undefined];
+}
+
 export function upperCaseFirstLetter(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
