@@ -1,4 +1,6 @@
-import type { URI } from "vscode-uri";
+import { URI } from "vscode-uri";
+
+export { URI };
 
 /** Common interface to match both {@link URI} and VScode's URI */
 export interface UriLike {
