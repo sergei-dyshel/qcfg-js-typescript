@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { defaultCompare } from "./array";
-import type { PlainObject } from "./types";
+import type { Complete, Entries, PlainObject } from "./types";
 
 /** Return copy of object with undefined values removed */
 export function omitUndefinedValues<T extends object>(obj: T): T {
@@ -86,6 +86,22 @@ export function sortObjectKeys(obj: object) {
   );
 }
 
-export function objectKeys<T extends Record<string, any>>(obj: T): (keyof T)[] {
+/** Typed version of {@link Object.keys} */
+export function objectKeys<T extends object>(obj: T): (keyof T)[] {
   return Object.keys(obj) as (keyof T)[];
 }
+
+/**
+ * Typed version of {@link Object.entries}
+ *
+ * If type of object has optional properties one may need to transform type with {@link Complete}.
+ */
+export function objectEntries<T extends object>(obj: T) {
+  return Object.entries(obj) as unknown as Entries<T>;
+}
+
+/** Typed version of {@link Object.fromEntries} */
+export const objectFromEntries = <const T extends ReadonlyArray<readonly [PropertyKey, unknown]>>(
+  entries: T,
+): { [K in T[number] as K[0]]: K[1] } =>
+  Object.fromEntries(entries) as { [K in T[number] as K[0]]: K[1] };
