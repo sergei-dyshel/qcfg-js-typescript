@@ -19,7 +19,8 @@
     "./map": "./src/map.ts",
     "./set": "./src/set.ts",
     "./datetime": "./src/datetime.ts",
-    "./utils": "./src/utils/index.ts"
+    "./utils": "./src/utils/index.ts",
+    "./iterator": "./src/iterator.ts"
   },
   "bin": {
     "qcfg-test": "./scripts/qcfg-test"
