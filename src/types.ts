@@ -37,6 +37,31 @@ export type RecordEntry<T> = T extends Record<infer K, infer V> ? [K, V] : never
 /** Array element type */
 export type ElementType<T> = T extends ReadonlyArray<infer E> ? E : never;
 
+/** Type for {@link Object.entries} */
+export type Entries<T> = { [K in keyof T]: readonly [K, T[K]] }[keyof T][];
+
+/**
+ * Similar to {@link Required} but allow undefined for transformed optional properties
+ *
+ * Example:
+ *
+ * ```ts
+ * Complete<{ a: string; b?: string }>;
+ * ```
+ *
+ * Is equivalent to
+ *
+ * ```ts
+ * { a: string, b: string | undefined }
+ * ```
+ *
+ * See
+ * https://medium.com/terria/typescript-transforming-optional-properties-to-required-properties-that-may-be-undefined-7482cb4e1585
+ */
+export type Complete<T> = {
+  [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>> ? T[P] : T[P] | undefined;
+};
+
 /**
  * Useful for making sure value's type extends given type without loosing type information
  *
@@ -68,3 +93,8 @@ export type KebabToCamelCase<S extends string> = S extends `${infer T}-${infer U
 export type KebabToCamelCaseKeys<T> = {
   [P in StringKeyOf<T> as KebabToCamelCase<P>]: T[P];
 };
+
+/** Specify that value still can be undefined despite its type */
+export function canBeUndefined<T, N extends NonNullable<T>>(value: N): N | undefined {
+  return value;
+}
