@@ -2,6 +2,8 @@ import { Mutex } from "async-mutex";
 import { DefaultMap } from "./map";
 import type { Awaitable } from "./types";
 
+export { Semaphore } from "async-mutex";
+
 export class Lock extends Mutex {
   async with<T>(f: () => Awaitable<T>) {
     const release = await this.acquire();
