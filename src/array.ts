@@ -35,6 +35,18 @@ export function lessCompare<T>(lessFn: (a: T, b: T) => boolean) {
   };
 }
 
+/** Compose multiple compare function in lexicographic order */
+export function composeCompare<T>(...comparators: Array<(a: T, b: T) => number>) {
+  return (a: T, b: T) => {
+    let cmp = 0;
+    for (const comparator of comparators) {
+      cmp = comparator(a, b);
+      if (cmp !== 0) return cmp;
+    }
+    return cmp;
+  };
+}
+
 export function lexicographicCompare<T, V>(...keys: Array<(_: T) => V>) {
   return (a: T, b: T) => {
     for (const key of keys) {
@@ -44,11 +56,13 @@ export function lexicographicCompare<T, V>(...keys: Array<(_: T) => V>) {
     return 0;
   };
 }
+
 export function arrayEquals<T>(arr: readonly T[], other: readonly T[]) {
   if (arr.length !== other.length) return false;
   for (let i = 0; i < arr.length; i++) if (arr[i] !== other[i]) return false;
   return true;
 }
+
 export function sortUniq<T>(arr: T[], compareFn?: (a: T, b: T) => number) {
   if (!compareFn) compareFn = defaultCompare<T>;
   arr.sort(compareFn);
