@@ -4,7 +4,8 @@ set -e
 
 args=()
 
-while getopts "p:ibB:" opt; do
+loader_args=(--import tsx)
+while getopts "p:ibB:ndt" opt; do
     case "$opt" in
     p)
         args+=(--test-name-pattern "$OPTARG")
@@ -18,6 +19,15 @@ while getopts "p:ibB:" opt; do
     B)
         args+=(--inspect-brk="$OPTARG")
         ;;
+    n)
+        loader_args+=(--require ts-node/register)
+        ;;
+    d)
+        export QCFG_TEST_LOG_LEVEL=DEBUG
+        ;;
+    t)
+        export QCFG_TEST_USE_TEST_DIR=1
+        ;;
     \?)
         echo "Invalid option: -$OPTARG" >&2
         exit 1
@@ -26,4 +36,5 @@ while getopts "p:ibB:" opt; do
 done
 shift "$((OPTIND - 1))"
 
-exec node --import tsx --test "${args[@]}" "$@"
+exec node "${loader_args[@]}" --test "${args[@]}" "$@"
+
