@@ -8,6 +8,8 @@
 
 export type AnyFunction = (...args: any[]) => any;
 
+export type FunctionWithArgs = (arg: any, ...args: any) => any;
+
 export type AsyncFunction<T = unknown> = (...args: unknown[]) => Promise<T>;
 
 /**
@@ -40,6 +42,13 @@ export type ElementType<T> = T extends ReadonlyArray<infer E> ? E : never;
 /** Type for {@link Object.entries} */
 export type Entries<T> = { [K in keyof T]: readonly [K, T[K]] }[keyof T][];
 
+/** Type of last element of tuple */
+export type Last<T extends [any, ...any[]]> = T extends [...infer _I, infer L] ? L : never;
+
+/** All elements of tuple except for the first one */
+export type Tail<T extends [any, ...any[]]> = T extends [infer _I, ...infer A] ? A : never;
+
+export type AssertExtends<T, U> = T extends U ? T : never;
 /**
  * Similar to {@link Required} but allow undefined for transformed optional properties
  *
