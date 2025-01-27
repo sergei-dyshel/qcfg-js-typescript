@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { defaultCompare } from "./array";
-import type { Complete, Entries, PlainObject } from "./types";
+import { defaultCompare, mapAsync } from "./array";
+import type { Awaitable, Complete, Entries, PlainObject } from "./types";
 
 /** Return copy of object with undefined values removed */
 export function omitUndefinedValues<T extends object>(obj: T): T {
@@ -31,11 +31,21 @@ export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[]):
 /**
  * Subset of the object without given keys.
  *
+ * If object is undefined, return undefined.
+ *
  * Also see {@link Omit}
  */
-export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
+export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K>;
+export function omit<T extends object, K extends keyof T>(
+  obj: T | undefined,
+  ...keys: K[]
+): Omit<T, K> | undefined;
+export function omit(obj: undefined, ...keys: string[]): undefined;
+// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+export function omit(obj: any | undefined, ...keys: string[]): object | undefined {
+  if (obj === undefined) return undefined;
   const ret: any = {};
-  for (const key in obj) if (!keys.includes(key as unknown as K)) ret[key] = obj[key];
+  for (const key in obj) if (!keys.includes(key)) ret[key] = obj[key];
   return ret;
 }
 
@@ -45,6 +55,16 @@ export function mapValues<V, R>(
   func: (k: string, v: V) => R,
 ): Record<string, R> {
   return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, func(key, value)]));
+}
+
+/** Async version of {@link mapValues} */
+export async function mapValuesAsync<V, R>(
+  obj: Record<string, V>,
+  func: (k: string, v: V) => Awaitable<R>,
+): Promise<Record<string, R>> {
+  return objectFromEntries(
+    await mapAsync(objectEntries(obj), async ([key, value]) => [key, await func(key, value)]),
+  );
 }
 
 export function mapKeys<K extends string, V, R extends string>(
