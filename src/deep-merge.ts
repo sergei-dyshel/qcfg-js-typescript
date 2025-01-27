@@ -3,6 +3,14 @@ import { isPlainObject } from "./object";
 
 export class DeepMergeError extends AssertionError {}
 
+/**
+ * Recursively merge source objects into target object.
+ *
+ * Rules for merging:
+ *
+ * - Arrays are fully overriden.
+ * - Objects are merged recursively. Both missing and undefined values are assigned.
+ */
 export function deepMergeInto<T>(
   target: T,
   sources: (T | undefined)[],
@@ -40,6 +48,11 @@ export function deepMergeInto<T>(
   }
 }
 
+/**
+ * Recursively merge multiple objects.
+ *
+ * See {@link deepMergeInto}.
+ */
 export function deepMerge<T>(...sources: (T | undefined)[]): T {
   const target = {} as T;
   deepMergeInto(target, sources);
