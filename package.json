@@ -44,7 +44,7 @@
     "@sergei-dyshel/prettier-config": "*",
     "dpdm": "^3.14.0",
     "just-install": "^2.0.2",
-    "tsx": "^4.10.1"
+    "tsx": "^4.19.2"
   },
   "dependencies": {
     "@sergei-dyshel/typescript": "*",
