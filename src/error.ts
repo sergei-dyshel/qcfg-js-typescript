@@ -5,6 +5,7 @@ export { rejects as assertRejects, throws as assertThrows } from "node:assert/st
 
 export class LoggableError extends Error {
   data?: unknown[];
+  protected static namePrefix?: string;
 
   constructor(
     message: string,
@@ -14,7 +15,8 @@ export class LoggableError extends Error {
     },
   ) {
     super(message, { cause: options?.cause });
-    this.name = this.constructor.name;
+    const self = this.constructor as unknown as typeof LoggableError;
+    this.name = (self.namePrefix ?? "") + self.name;
     this.data = options?.data;
   }
 
