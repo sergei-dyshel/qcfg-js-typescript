@@ -6,6 +6,8 @@
  *   - https://github.com/sindresorhus/type-fest
  */
 
+export { Optional } from "utility-types";
+
 export type AnyFunction = (...args: any[]) => any;
 
 export type FunctionWithArgs = (arg: any, ...args: any) => any;
