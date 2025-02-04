@@ -26,6 +26,11 @@ export type SyncFunction<T = unknown> = (...args: unknown[]) => NotPromise<T>;
 /** Something we can do `await on */
 export type Awaitable<T> = T | Promise<T>;
 
+export type Awaited<T> = T extends Promise<infer U> ? U : T;
+
+// REFACTOR: find a proper name
+export type AwaitedUnion<T, U> = T extends Promise<infer R> ? Promise<R | U> : T | U;
+
 /** Make only specific properties required, combines {@link Pick} and {@link Required} */
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 

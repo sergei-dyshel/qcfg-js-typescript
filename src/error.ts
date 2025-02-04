@@ -1,5 +1,5 @@
 import { deepEqual } from "node:assert";
-import type { AsyncFunction, SyncFunction } from "./types";
+import type { AnyFunction, AwaitedUnion } from "./types";
 
 export { rejects as assertRejects, throws as assertThrows } from "node:assert/strict";
 
@@ -141,23 +141,16 @@ export function asInstanceOf<T, C extends T>(value: T, cls: Function & { prototy
   return value as C;
 }
 
-export function wrapWithCatch<T, R, F extends AsyncFunction<T>>(
+export function wrapWithCatch<F extends AnyFunction, R>(
   func: F,
   catchHandler: (err: unknown) => R,
-): (...funcArgs: Parameters<F>) => Promise<T | R> | R;
-export function wrapWithCatch<T, R, F extends SyncFunction<T>>(
-  func: F,
-  catchHandler: (err: unknown) => R,
-): (...funcArgs: Parameters<F>) => T | R;
-
-export function wrapWithCatch(func: Function, catchHandler: Function) {
-  return async (...args: unknown[]) => {
+) {
+  return (async (...args: unknown[]) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return await func(...args);
     } catch (err) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return catchHandler(err);
     }
-  };
+  }) as unknown as (...funcArgs: Parameters<F>) => AwaitedUnion<ReturnType<F>, R>;
 }
