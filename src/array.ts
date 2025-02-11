@@ -126,3 +126,9 @@ export async function mapSomeAsync<V, R>(
   const zip = await mapSomeAsyncAndZip(arr, func);
   return zip.map((pair) => pair[1]);
 }
+
+/** Convert scalar to array if needed */
+export function normalizeArray<T>(x: T | T[]): T[] {
+  if (Array.isArray(x)) return x;
+  return [x];
+}
