@@ -128,7 +128,8 @@ export async function mapSomeAsync<V, R>(
 }
 
 /** Convert scalar to array if needed */
-export function normalizeArray<T>(x: T | T[]): T[] {
+export function normalizeArray<T>(x: T | T[] | undefined): T[] {
+  if (x === undefined) return [];
   if (Array.isArray(x)) return x;
   return [x];
 }
