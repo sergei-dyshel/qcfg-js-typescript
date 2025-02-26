@@ -91,7 +91,7 @@ export function formatError(
 ): string {
   if (error instanceof Error) {
     const errMsg = errorMessage(error);
-    let msg = error.name === "Error" || !options?.hideName ? errMsg : `${error.name}: ${errMsg}`;
+    let msg = error.name === "Error" || options?.hideName ? errMsg : `${error.name}: ${errMsg}`;
     if (error.cause && options?.showCause)
       msg += ", caused by: " + formatError(error.cause, options);
     return msg;
