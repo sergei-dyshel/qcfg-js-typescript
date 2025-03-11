@@ -1,6 +1,7 @@
 export * from "./dataclass";
 export * from "./disposable";
 export * as Html from "./html";
+export * from "./iterator";
 export * from "./json";
 export * from "./lock";
 export * as Markdown from "./markdown";

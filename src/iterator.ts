@@ -16,3 +16,10 @@ export function max<T>(values: Iterable<T>, compare: (a: T, b: T) => number) {
 export function min<T>(values: Iterable<T>, compare: (a: T, b: T) => number) {
   return max(values, (a, b) => -compare(a, b));
 }
+
+/**
+ * Turn iterator over arrays into iterator over elements
+ */
+export async function* flattenAsyncIterator<T>(iter: AsyncIterable<T[]>) {
+  for await (const values of iter) for (const value of values) yield value;
+}
