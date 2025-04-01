@@ -12,7 +12,7 @@ export function omitUndefinedValues<T extends object>(obj: T): T {
 
 /** Object is plain Javascript object, not a class instance */
 export function isPlainObject(obj: unknown): obj is PlainObject {
-  if (!(typeof obj === "object")) return false;
+  if (!(obj && typeof obj === "object")) return false;
   const prototype = Object.getPrototypeOf(obj);
   return !!prototype && prototype.constructor === Object && prototype === Object.prototype;
 }
@@ -67,6 +67,9 @@ export async function mapValuesAsync<V, R>(
   );
 }
 
+/**
+ * Return new object with keys mapped through provided function.
+ */
 export function mapKeys<K extends string, V, R extends string>(
   obj: Record<K, V>,
   func: (k: K, v: V) => R,
@@ -76,10 +79,24 @@ export function mapKeys<K extends string, V, R extends string>(
   ) as Record<R, V>;
 }
 
+/**
+ * Construct new object with keys mapped recursively.
+ *
+ * Only transforms plain objects and arrays.
+ */
+export function mapKeysDeep(obj: any, func: (key: string) => string): any {
+  // Look at https://github.com/sindresorhus/map-obj/blob/main/index.js for another impl
+  // Look at https://github.com/sindresorhus/camelcase-keys/blob/main/index.js for changing keys case with caching.
+  if (Array.isArray(obj)) return obj.map((elem) => mapKeysDeep(elem, func));
+  if (typeof obj === "object" && isPlainObject(obj))
+    return mapEntries(obj, (key, value) => [func(key), mapKeysDeep(value, func)] as const);
+  return obj;
+}
+
 /** Map both keys and values of object. */
 export function mapEntries<K1 extends string, V1, K2 extends string, R2>(
   obj: Record<K1, V1>,
-  func: (k: K1, v: V1) => [K2, R2],
+  func: (k: K1, v: V1) => readonly [K2, R2],
 ): Record<K2, R2> {
   const entries = Object.entries(obj).map(([key, value]) => func(key as K1, value as V1));
   return Object.fromEntries(entries) as Record<K2, R2>;
