@@ -1,5 +1,12 @@
-export function* mapSet<T, V>(set: Set<T>, fn: (value: T) => V) {
-  for (const value of set) yield fn(value);
+/** Extends built-in {@link Set} with helper instance and static methods */
+export class Set<T> extends global.Set<T> {
+  addFrom(iterable: Iterable<T>) {
+    for (const value of iterable) this.add(value);
+  }
+
+  toArray() {
+    return [...this];
+  }
 }
 
 // Copied from lib.esnext.collection.d.ts to resolve TS errors
@@ -23,7 +30,7 @@ interface ReadonlySetLike<T> {
  * Allows mapping from arbitrary type by providing an adapter - function that converts from given
  * key type to key type that works with {@link Map}
  */
-export class SetAdapter<T, A> implements Set<T> {
+export class SetAdapter<T, A> implements globalThis.Set<T> {
   protected readonly map: Map<A, T>;
 
   constructor(
@@ -54,7 +61,7 @@ export class SetAdapter<T, A> implements Set<T> {
     return this.map.size;
   }
 
-  forEach(callbackfn: (value: T, value2: T, set: Set<T>) => void, thisArg?: any): void {
+  forEach(callbackfn: (value: T, value2: T, set: globalThis.Set<T>) => void, thisArg?: any): void {
     for (const value of this.values()) callbackfn.call(thisArg, value, value, this);
   }
 
