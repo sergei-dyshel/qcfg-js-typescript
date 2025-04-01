@@ -10,7 +10,7 @@
     "incremental": true,
     "noEmitOnError": true,
     "tsBuildInfoFile": "${configDir}/out/tsconfig.tsbuildinfo",
-    "lib": ["ES2023", "DOM", "ESNext.Disposable"],
+    "lib": ["ES2023", "ESNext.Collection", "DOM", "ESNext.Disposable"],
     // TODO: try to remove in future versions
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
