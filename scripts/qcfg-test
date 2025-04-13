@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
 set -e
+set -o pipefail
 
 args=()
 
+# IMPROVE: consider using https://github.com/MoLow/reporters
+
 loader_args=(--import tsx)
-while getopts "p:ibB:ndt" opt; do
+test_args=(--test)
+while getopts "Fop:ibB:ndt" opt; do
     case "$opt" in
     p)
         args+=(--test-name-pattern "$OPTARG")
@@ -28,6 +32,12 @@ while getopts "p:ibB:ndt" opt; do
     t)
         export QCFG_TEST_USE_TEST_DIR=1
         ;;
+    o)
+        test_args+=(--test-only)
+        ;;
+    F)
+        fail=1
+        ;;
     \?)
         echo "Invalid option: -$OPTARG" >&2
         exit 1
@@ -36,5 +46,14 @@ while getopts "p:ibB:ndt" opt; do
 done
 shift "$((OPTIND - 1))"
 
-exec node "${loader_args[@]}" --test "${args[@]}" "$@"
+if [[ -n "$fail" ]]; then
+    if node "${loader_args[@]}" "${test_args[@]}" "${args[@]}" --test-reporter tap "$@" 2>&1 | grep '# pass' | grep -v 'pass 0'; then
+        echo "Some tests unexpectedly passed"
+        exit 1
+    fi
+else
+    set -x
+    exec node "${loader_args[@]}" "${test_args[@]}" "${args[@]}" "$@"
+fi
+
 

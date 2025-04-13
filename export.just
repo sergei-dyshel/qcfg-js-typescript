@@ -9,13 +9,13 @@ dpdm:
 [no-cd]
 test:
     #!/usr/bin/env bash
+    for test in $(find . -name '*.test.ts'); do
+        echo "Verifying $test has no 'only' tests"
+        qcfg-test -o -F $test || exit 1
+    done
     ret_all=0
     for test in $(find . -name '*.test.ts'); do
         echo "Testing $test"
-        if grep -qF '[only]' $test; then
-            echo "Test file includes temporary [only] tag "
-            exit 1
-        fi
         qcfg-test $test
         ret=$?
         if [[ $ret -ne 0 ]]; then
