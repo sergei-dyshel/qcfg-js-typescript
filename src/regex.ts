@@ -16,9 +16,12 @@ export class RegExpWithNamedGroups<S extends string> extends RegExp {
 }
 
 // template-ized results type
-interface RegExpMatchedGroups<S extends string> extends RegExpExecArray {
+export interface RegExpMatchedGroups<S extends string> extends RegExpExecArray {
   groups?: ExtractGroupNames<S>;
 }
+
+export type RegExpWithNamedGroupsType<R> =
+  R extends RegExpWithNamedGroups<infer S> ? RegExpMatchedGroups<S> : never;
 
 /**
  * Escape special RexExp characters in string
