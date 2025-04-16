@@ -15,6 +15,15 @@ export function dateToEpoch(date: Date): number {
   return date.getTime() / 1000;
 }
 
+export function addToDate(date: Date, add: { seconds?: number; milliseconds?: number }): Date {
+  const result = new Date(date);
+  result.setSeconds(
+    date.getSeconds() + (add.seconds ?? 0),
+    date.getMilliseconds() + (add.milliseconds ?? 0),
+  );
+  return result;
+}
+
 export function relativeTime(since: Date): string {
   const minute = 60;
   const hour = minute * 60;
