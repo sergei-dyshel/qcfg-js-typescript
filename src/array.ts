@@ -1,3 +1,5 @@
+import type { Arrayable } from "./types";
+
 /**
  * Return array or pariwise combinations of two arrays
  *
@@ -128,7 +130,7 @@ export async function mapSomeAsync<V, R>(
 }
 
 /** Convert scalar to array if needed */
-export function normalizeArray<T>(x: T | T[] | undefined): T[] {
+export function normalizeArray<T>(x: Arrayable<T>): T[] {
   if (x === undefined) return [];
   if (Array.isArray(x)) return x;
   return [x];

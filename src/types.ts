@@ -114,3 +114,9 @@ export type KebabToCamelCaseKeys<T> = {
 export function canBeUndefined<T, N extends NonNullable<T>>(value: N): N | undefined {
   return value;
 }
+
+/** Value that can be converted to array of zero, one or multiple elements */
+export type Arrayable<T> = T | T[] | undefined;
+
+/** Constructor function for given type */
+export type ConstructorOf<T> = new (...args: any[]) => T;
