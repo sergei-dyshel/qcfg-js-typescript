@@ -16,3 +16,4 @@ export const EXCLAMATION_MARK = "❗";
 export const FLOPPY_DISK = "💾";
 export const STAR = "⭐";
 export const BABY_CHICK = "🐥";
+export const EM_SPACE = " "; // just a whitespace
