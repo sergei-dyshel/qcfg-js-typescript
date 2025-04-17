@@ -35,6 +35,25 @@ export class LoggableError extends Error {
   }
 }
 
+/**
+ * Traverses exception stack (using {@link Error.cause} property) and finds the first exception for
+ * which given function returns non-null value.
+ *
+ * Useful to check if certain exception was originally caused by another exception.
+ */
+export function errorCausedBy<T>(
+  err: unknown,
+  getReason: (err: unknown) => T | undefined,
+): T | undefined {
+  const reason = getReason(err);
+  if (reason) return reason;
+  if (err instanceof Error) {
+    const reason = errorCausedBy(err.cause, getReason);
+    if (reason) return reason;
+  }
+  return undefined;
+}
+
 export class AssertionError extends LoggableError {
   constructor(message = "Assertion failed", ...data: unknown[]) {
     super(message, { data });
