@@ -68,6 +68,16 @@ export async function mapValuesAsync<V, R>(
 }
 
 /**
+ * Return new object with filtered entries
+ */
+export function filterObjectEntries<K extends string, V>(
+  obj: Record<K, V>,
+  filter: (key: K, value: V) => boolean,
+) {
+  return objectFromEntries(objectEntries(obj).filter(([key, value]) => filter(key, value)));
+}
+
+/**
  * Return new object with keys mapped through provided function.
  */
 export function mapKeys<K extends string, V, R extends string>(
