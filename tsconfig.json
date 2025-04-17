@@ -2,7 +2,7 @@
   "compilerOptions": {
     // https://stackoverflow.com/questions/59787574/typescript-tsconfig-settings-for-node-js-12/59787575#59787575
     "composite": true,
-    "target": "ES2023",
+    "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "${configDir}/out",
@@ -10,7 +10,7 @@
     "incremental": true,
     "noEmitOnError": true,
     "tsBuildInfoFile": "${configDir}/out/tsconfig.tsbuildinfo",
-    "lib": ["ES2023", "ESNext.Collection", "DOM", "ESNext.Disposable"],
+    "lib": ["ESNext", "DOM"],
     // TODO: try to remove in future versions
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
