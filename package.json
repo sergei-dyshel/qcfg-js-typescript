@@ -21,7 +21,8 @@
     "./datetime": "./src/datetime.ts",
     "./utils": "./src/utils/index.ts",
     "./iterator": "./src/iterator.ts",
-    "./shims": "./src/shims.ts"
+    "./shims": "./src/shims.ts",
+    "./math": "./src/math.ts"
   },
   "bin": {
     "qcfg-test": "./scripts/qcfg-test"
