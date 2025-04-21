@@ -26,6 +26,11 @@ export class SchemaMap<T extends zod.ZodTypeAny, V> extends MapAdapter<zod.infer
   }
 }
 
+/**
+ * Set of arbitrary objects matching given schema.
+ *
+ * Stores "parsed" version of given objects (e.g. stripped of unknown properties)
+ */
 export class SchemaSet<T extends zod.ZodTypeAny> extends SetAdapter<zod.infer<T>, string> {
   constructor(schema: T, values?: zod.infer<T>[]) {
     super(

@@ -27,17 +27,28 @@ interface ReadonlySetLike<T> {
 }
 
 /**
- * Allows mapping from arbitrary type by providing an adapter - function that converts from given
- * key type to key type that works with {@link Map}
+ * Create{@link Set}-like object for arbitrary type by providing an adapter - function that converts
+ * from given key type to key type that works with {@link Map}
+ *
+ * If key=>adapter mapping should be 1:1, provide "sanitizer" function that will refine key value.
  */
 export class SetAdapter<T, A> implements globalThis.Set<T> {
   protected readonly map: Map<A, T>;
 
   constructor(
-    protected cbs: { adapter: (_: T) => A; sanitizer?: (_: T) => T },
+    protected cbs: {
+      /** Convert from key type to mappable adapter type */
+      adapter: (_: T) => A;
+      /** Sanitize key value to allow 1:1 mapping to adapter type */
+      sanitizer?: (_: T) => T;
+    },
     values: readonly T[] = [],
   ) {
-    this.map = new Map<A, T>(values.map((x) => [cbs.adapter(x), x]));
+    this.map = new Map<A, T>(values.map((x) => [cbs.adapter(x), this.sanitize(x)]));
+  }
+
+  private sanitize(value: T) {
+    return this.cbs.sanitizer ? this.cbs.sanitizer(value) : value;
   }
 
   clear(): void {
@@ -53,7 +64,7 @@ export class SetAdapter<T, A> implements globalThis.Set<T> {
   }
 
   add(value: T): this {
-    this.map.set(this.cbs.adapter(value), this.cbs.sanitizer ? this.cbs.sanitizer(value) : value);
+    this.map.set(this.cbs.adapter(value), this.sanitize(value));
     return this;
   }
 
@@ -68,6 +79,7 @@ export class SetAdapter<T, A> implements globalThis.Set<T> {
   *entries(): IterableIterator<[T, T]> {
     for (const value of this.values()) yield [value, value];
   }
+
   keys() {
     return this.values();
   }
