@@ -1,3 +1,4 @@
+import { fail } from "./error";
 import type { Arrayable } from "./types";
 
 /**
@@ -23,9 +24,10 @@ export function arrayRemove<T>(array: T[], item: T): boolean {
 
 /** Default comparison function for primitive types, for use with {@link Array.sort} */
 export function defaultCompare<T>(a: T, b: T): number {
-  if (a < b) return -1;
-  if (a === b) return 0;
-  return 1;
+  if (typeof a === "string") return a.localeCompare(b as string);
+  if (a instanceof Date) return a.getTime() - (b as Date).getTime();
+  if (typeof a === "number") return a - (b as number);
+  fail(`Invalid type of compare operands: ${typeof a} and ${typeof b}`);
 }
 
 /** Convert less-style comparison function to comparison function for use with {@link Array.sort} */
