@@ -120,3 +120,11 @@ export type Arrayable<T> = T | T[] | undefined;
 
 /** Constructor function for given type */
 export type ConstructorOf<T> = new (...args: any[]) => T;
+
+/**
+ * Replace properties from T by properties with same name from U.
+ *
+ * NOTE: This is a better approach than just `T & U` because the later will also merge types of
+ * properties with same name, not replace.
+ */
+export type Replace<T, U extends { [key in keyof T]: any }> = Omit<T, keyof U> & U;
