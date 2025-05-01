@@ -1,3 +1,4 @@
+export * from "./cache";
 export * from "./dataclass";
 export * from "./disposable";
 export * as Html from "./html";
