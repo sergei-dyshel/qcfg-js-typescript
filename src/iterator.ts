@@ -27,6 +27,26 @@ export namespace Iterator {
     for await (const values of iter) for (const value of values) yield value;
   }
 
+  export function* serialize<T>(...iters: IterableIterator<T>[]) {
+    for (const iter of iters) {
+      for (const value of iter) {
+        yield value;
+      }
+    }
+  }
+
+  export function* filter<T>(iter: IterableIterator<T>, predicate: (value: T) => boolean) {
+    for (const value of iter) {
+      if (predicate(value)) yield value;
+    }
+  }
+
+  export function count<T>(iter: IterableIterator<T>) {
+    let count = 0;
+    for (const _ of iter) count++;
+    return count;
+  }
+
   /**
    * Generate sequence of numbers from `start` to `end` (exclusive)
    */
