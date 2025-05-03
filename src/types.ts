@@ -119,7 +119,7 @@ export function canBeUndefined<T, N extends NonNullable<T>>(value: N): N | undef
 export type Arrayable<T> = T | T[] | undefined;
 
 /** Constructor function for given type */
-export type ConstructorOf<T> = new (...args: any[]) => T;
+export type ConstructorOf<T> = abstract new (...args: any[]) => T;
 
 /**
  * Replace properties from T by properties with same name from U.
