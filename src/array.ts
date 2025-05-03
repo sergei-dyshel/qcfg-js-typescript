@@ -1,5 +1,5 @@
 import { fail } from "./error";
-import type { Arrayable } from "./types";
+import type { Arrayable, ConstructorOf } from "./types";
 
 /**
  * Return array or pariwise combinations of two arrays
@@ -78,6 +78,16 @@ export function sortUniq<T>(arr: T[], compareFn?: (a: T, b: T) => number) {
 
 export function filterNonNull<T>(arr: readonly T[]) {
   return arr.filter((x) => x !== undefined && x !== null) as NonNullable<T>[];
+}
+
+/**
+ * Filters instances of given class(ctor) from array
+ */
+export function filterInstanceOf<T extends object, C extends ConstructorOf<T>>(
+  arr: readonly T[],
+  ctor: C,
+): InstanceType<C>[] {
+  return arr.filter((x) => x instanceof ctor) as InstanceType<C>[];
 }
 
 export function mapAsync<T, P>(arr: readonly T[], f: (_: T, index: number) => Promise<P>) {
