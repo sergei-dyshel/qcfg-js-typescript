@@ -6,6 +6,7 @@ export * from "./iterator";
 export * from "./json";
 export * from "./lock";
 export * as Markdown from "./markdown";
+export * from "./memoize";
 export * from "./misc";
 export * from "./regex";
 export * as Unicode from "./unicode";
