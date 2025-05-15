@@ -22,6 +22,10 @@ export function arrayRemove<T>(array: T[], item: T): boolean {
   return false;
 }
 
+export function arraySum(array: number[]): number {
+  return array.reduce((a, b) => a + b, 0);
+}
+
 /** Default comparison function for primitive types, for use with {@link Array.sort} */
 export function defaultCompare<T>(a: T, b: T): number {
   if (typeof a === "string") return a.localeCompare(b as string);
