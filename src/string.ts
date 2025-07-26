@@ -48,3 +48,23 @@ export function upperCaseFirstLetter(s: string) {
 export function dedentAndJoin(s: TemplateStringsArray | string, ...args: unknown[]) {
   return dedent(s, ...args).replace(/\n/g, " ");
 }
+
+export class TemplateError extends Error {}
+
+/**
+ * Expand JS-style templates
+ */
+export function expandTemplate(
+  text: string,
+  substitute: Record<string, string | undefined>,
+  throwWhenNotExist = false,
+): string {
+  return text.replaceAll(/\${([a-zA-Z\d]+)}/g, (_, varname: string) => {
+    const sub = substitute[varname];
+    if (sub === undefined) {
+      if (throwWhenNotExist) throw new TemplateError(`Could not substitute var "${varname}"`);
+      return "";
+    }
+    return sub;
+  });
+}
