@@ -126,6 +126,11 @@ export function assertNotNull<T>(
   assert(val !== undefined && val !== null, message, ...data);
 }
 
+export function notNull<T>(val: T, message?: string, ...args: unknown[]): NonNullable<T> {
+  assertNotNull(val, message, ...args);
+  return val;
+}
+
 export class AbortError extends Error {
   constructor(cause?: unknown) {
     super("User cancelled the operation", { cause });

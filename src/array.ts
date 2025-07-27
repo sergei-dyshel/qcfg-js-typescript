@@ -22,8 +22,31 @@ export function arrayRemove<T>(array: T[], item: T): boolean {
   return false;
 }
 
+/** Remove all elements */
+export function arrayClear<T>(array: T[]) {
+  array.splice(0, array.length);
+}
+
+export function arrayFirstOf<T>(array: readonly T[], cond: (val: T) => boolean): T | undefined {
+  const idx = array.findIndex(cond);
+  if (idx === -1) return undefined;
+  return array[idx];
+}
+
 export function arraySum(array: number[]): number {
   return array.reduce((a, b) => a + b, 0);
+}
+
+/** Group (sorted) array by binary predicate, return array of groups */
+export function arrayGroup<T>(array: readonly T[], func: (x: T, y: T) => boolean) {
+  return array.reduce<T[][]>((prev: T[][], cur: T) => {
+    if (prev.length === 0 || !func(prev.at(-1)![0], cur)) {
+      prev.push([cur]);
+    } else {
+      prev.at(-1)!.push(cur);
+    }
+    return prev;
+  }, []);
 }
 
 /** Default comparison function for primitive types, for use with {@link Array.sort} */
