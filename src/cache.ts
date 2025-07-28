@@ -34,6 +34,7 @@ export class AsyncCache<K, V> {
     if (entry) {
       if (entry instanceof Promise) return entry;
       if (Date.now() - entry.time > (this.options?.timeoutMs ?? Infinity)) this.map.delete(key);
+      else return entry.value;
     }
     const promise = this.factory(key);
     if (promise instanceof Promise) {
