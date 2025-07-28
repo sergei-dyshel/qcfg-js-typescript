@@ -121,6 +121,14 @@ export function mapAsync<T, P>(arr: readonly T[], f: (_: T, index: number) => Pr
   return Promise.all(arr.map(f));
 }
 
+export async function mapSync<T, P>(arr: readonly T[], f: (_: T, index: number) => Promise<P>) {
+  const results: P[] = [];
+  for (const x of arr) {
+    results.push(await f(x, 0));
+  }
+  return results;
+}
+
 export async function filterAsync<T>(
   arr: readonly T[],
   f: (_: T, index: number) => Promise<boolean>,
