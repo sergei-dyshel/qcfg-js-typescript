@@ -68,3 +68,24 @@ export function expandTemplate(
     return sub;
   });
 }
+
+/**
+ * Search first occurence of pattern and return the match's [start, length]
+ */
+export function searchFirst(
+  str: string,
+  pattern: string | RegExp,
+): [start: number, length: number] | undefined {
+  if (typeof pattern === "string") {
+    const start = str.indexOf(pattern);
+    if (start === -1) return;
+    return [start, pattern.length];
+  }
+  const match = pattern.exec(str);
+  if (!match) return;
+  return [match.index, match[0].length];
+}
+
+export function dashesToUnderscores(str: string) {
+  return str.replaceAll("-", "_");
+}
