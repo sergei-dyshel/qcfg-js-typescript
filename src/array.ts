@@ -1,4 +1,5 @@
 import { fail } from "./error";
+import { Iterator } from "./iterator";
 import type { Arrayable, ConstructorOf } from "./types";
 
 /**
@@ -86,6 +87,13 @@ export function lexicographicCompare<T, V>(...keys: Array<(_: T) => V>) {
     }
     return 0;
   };
+}
+export function numberCompare<T>(x: T, y: T): number {
+  const xNum = x as unknown as number;
+  const yNum = y as unknown as number;
+  if (xNum < yNum) return -1;
+  if (xNum === yNum) return 0;
+  return 1;
 }
 
 export function arrayEquals<T>(arr: readonly T[], other: readonly T[]) {
@@ -181,4 +189,92 @@ export function normalizeArray<T>(x: Arrayable<T>): T[] {
   if (x === undefined) return [];
   if (Array.isArray(x)) return x;
   return [x];
+}
+
+/**
+ * Binary search value and return its index.
+ *
+ * `mode` determines how to act when there is no exact match.
+ *
+ * In `left` mode return LARGEST `i` so that `a[i] <= x`. If already `a[0] > x`, return `0`.
+ *
+ * In `right` mode return SMALLEST `i` so that `a[i] >= x`. If already `a[n-1] < x`, return `n`.
+ *
+ * XXX: currently unused
+ */
+export function binarySearch<T>(
+  this: ReadonlyArray<T>,
+  value: T,
+  compare = numberCompare,
+  mode: "left" | "right" = "right",
+): number {
+  let left = 0;
+  let right = this.length;
+  while (left < right) {
+    const mid = Math.floor((left + right) / 2);
+    const cmp = compare(this[mid], value);
+
+    if (mode === "left") {
+      if (cmp > 0) right = mid;
+      left = mid + 1;
+    } else {
+      if (cmp < 0) left = mid + 1;
+      right = mid;
+    }
+  }
+  return left;
+}
+
+/**
+ * Indexes of all elements equal to given one See {@link Array.indexOf}.
+ */
+export function allIndexesOf<T>(array: T[], searchElement: T, fromIndex?: number): number[] {
+  const inds: number[] = [];
+  for (;;) {
+    const ind = array.indexOf(searchElement, fromIndex);
+    if (ind === -1) {
+      break;
+    } else {
+      inds.push(ind);
+      fromIndex = ind + 1;
+    }
+  }
+  return inds;
+}
+
+/**
+ * Iterate over array in order of provided index iterator
+ */
+export class ArrayIterator<T> implements IterableIterator<T> {
+  constructor(
+    private readonly array: ArrayLike<T>,
+    private readonly numIter: IterableIterator<number>,
+  ) {}
+
+  next(): IteratorResult<T> {
+    const numRes = this.numIter.next();
+    if (numRes.done) return { done: true, value: undefined };
+    return { done: false, value: this.array[numRes.value] };
+  }
+
+  [Symbol.iterator]() {
+    return this;
+  }
+}
+
+export function arrayIter<T>(array: readonly T[], start?: number, end?: number, step?: number) {
+  if (step === 0) throw new Error("Can not have zero step");
+  return new ArrayIterator<T>(array, Iterator.range(start ?? 0, end ?? array.length, step ?? 1));
+}
+
+export function arrayReverseIter<T>(array: readonly T[]) {
+  return arrayIter(array, array.length - 1, 0, -1);
+}
+
+export function arrayReversed<T>(array: readonly T[]) {
+  return [...arrayReverseIter(array)];
+}
+
+export function arrayPairIter<T>(array: readonly T[]) {
+  return Iterator.zip(arrayIter(array, 0, array.length - 1), arrayIter(array, 1, array.length));
 }

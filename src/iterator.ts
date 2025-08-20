@@ -70,4 +70,26 @@ export namespace Iterator {
   function* rangeGenerator(start: number, end: number, step?: number) {
     for (let i = start; i < end; i += step ?? 1) yield i;
   }
+
+  export class Zip<T, U> implements IterableIterator<[T, U]> {
+    constructor(
+      private readonly iter1: Iterator<T>,
+      private readonly iter2: Iterator<U>,
+    ) {}
+
+    next(): IteratorResult<[T, U]> {
+      const result1 = this.iter1.next();
+      const result2 = this.iter2.next();
+      if (!!result1.done || !!result2.done) return { done: true, value: undefined };
+      return { done: false, value: [result1.value, result2.value] };
+    }
+
+    [Symbol.iterator]() {
+      return this;
+    }
+  }
+
+  export function zip<T, U>(iter1: Iterable<T>, iter2: Iterable<U>): IterableIterator<[T, U]> {
+    return new Zip(iter1[Symbol.iterator](), iter2[Symbol.iterator]());
+  }
 }
