@@ -1,6 +1,6 @@
 import { fail } from "./error";
 import { Iterator } from "./iterator";
-import type { Arrayable, ConstructorOf } from "./types";
+import type { Arrayable, CompareFunc, ConstructorOf } from "./types";
 
 /**
  * Return array or pariwise combinations of two arrays
@@ -21,11 +21,6 @@ export function arrayRemove<T>(array: T[], item: T): boolean {
     return true;
   }
   return false;
-}
-
-/** Remove all elements */
-export function arrayClear<T>(array: T[]) {
-  array.splice(0, array.length);
 }
 
 export function arrayFirstOf<T>(array: readonly T[], cond: (val: T) => boolean): T | undefined {
@@ -96,9 +91,17 @@ export function numberCompare<T>(x: T, y: T): number {
   return 1;
 }
 
-export function arrayEquals<T>(arr: readonly T[], other: readonly T[]) {
+function defaultEquals<T>(a: T, b: T) {
+  return a === b;
+}
+
+export function arrayEquals<T>(
+  arr: readonly T[],
+  other: readonly T[],
+  eq: (x: T, y: T) => boolean = defaultEquals,
+) {
   if (arr.length !== other.length) return false;
-  for (let i = 0; i < arr.length; i++) if (arr[i] !== other[i]) return false;
+  for (let i = 0; i < arr.length; ++i) if (!eq(arr[i], other[i])) return false;
   return true;
 }
 
@@ -109,7 +112,15 @@ export function sortUniq<T>(arr: T[], compareFn?: (a: T, b: T) => number) {
     if (compareFn(arr[i], arr[i - 1]) === 0) arr.splice(i, 1);
   }
   return arr;
-} /** @scopeDefault . */
+}
+
+/** Array of unique elements (works on unsorted too) */
+export function arrayUniq<T>(array: T[], equals: (x: T, y: T) => boolean): T[] {
+  return array.reduce<T[]>(
+    (unique, item) => (unique.some((item1) => equals(item, item1)) ? unique : [...unique, item]),
+    [],
+  );
+}
 
 export function filterNonNull<T>(arr: readonly T[]) {
   return arr.filter((x) => x !== undefined && x !== null) as NonNullable<T>[];
@@ -267,14 +278,61 @@ export function arrayIter<T>(array: readonly T[], start?: number, end?: number, 
   return new ArrayIterator<T>(array, Iterator.range(start ?? 0, end ?? array.length, step ?? 1));
 }
 
-export function arrayReverseIter<T>(array: readonly T[]) {
+export function reverseIter<T>(array: readonly T[]) {
   return arrayIter(array, array.length - 1, 0, -1);
 }
 
 export function arrayReversed<T>(array: readonly T[]) {
-  return [...arrayReverseIter(array)];
+  return [...reverseIter(array)];
 }
 
-export function arrayPairIter<T>(array: readonly T[]) {
+export function pairIter<T>(array: readonly T[]) {
   return Iterator.zip(arrayIter(array, 0, array.length - 1), arrayIter(array, 1, array.length));
+}
+
+/** Sort by key extracted from operands */
+export function sortByKey<T>(array: T[], keyFn: (_: T) => any, compareFn?: CompareFunc<any>) {
+  const cmp = compareFn ?? defaultCompare;
+  return array.sort((a: T, b: T) => cmp(keyFn(a), keyFn(b)));
+}
+
+export function arraySorted<T>(array: T[], cmp?: CompareFunc<T>): T[] {
+  return array.slice().sort(cmp);
+}
+
+/**
+ * Maximum element of array.
+ *
+ * @param cmp Returns negative if x < y, 0 if x === y and positive if x > Y
+ */
+export function max<T>(array: readonly T[], cmp: CompareFunc<T> = numberCompare) {
+  if (!array.length) return;
+  return array.reduce((x, y) => (cmp(x, y) < 0 ? y : x));
+}
+
+/**
+ * Minimum element of array.
+ *
+ * @param cmp See {@linkcode max}
+ */
+export function min<T>(array: readonly T[], cmp: CompareFunc<T> = numberCompare) {
+  if (!array.length) return;
+  return array.reduce((x, y) => (cmp(x, y) < 0 ? x : y));
+}
+
+export function removeFirst<T>(array: T[], val: T): boolean {
+  const index = array.indexOf(val);
+  if (index === -1) return false;
+  array.splice(index, 1);
+  return true;
+}
+
+export function forEachReverse<T>(
+  array: T[],
+  callbackfn: (value: T, index: number, array: T[]) => void,
+): void {
+  array.reduceRight((_, cur, index, array) => {
+    callbackfn(cur, index, array);
+    return undefined;
+  }, undefined);
 }

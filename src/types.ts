@@ -128,3 +128,10 @@ export type ConstructorOf<T> = abstract new (...args: any[]) => T;
  * properties with same name, not replace.
  */
 export type Replace<T, U extends { [key in keyof T]: any }> = Omit<T, keyof U> & U;
+
+/**
+ * Generic type for comparison function used in algorithms and data structures.
+ *
+ * Should return negative if `x < y`, 0 if `x = y` and positive if `x > y`.
+ */
+export type CompareFunc<T> = (x: T, y: T) => number;
