@@ -1,4 +1,5 @@
 import dedent from "ts-dedent";
+import { memoizeWithExc } from "./memoize";
 export { camelCase, kebabCase, snakeCase } from "case-anything";
 
 export { dedent };
@@ -88,4 +89,42 @@ export function searchFirst(
 
 export function dashesToUnderscores(str: string) {
   return str.replaceAll("-", "_");
+}
+
+/**
+ * Thrown by {@link expandTemplateLiteral} in case of template literal compiling/expanding error
+ */
+export class TemplateLiteralError extends Error {}
+
+function buildTemplateFunction(keys: string[], template: string) {
+  try {
+    // convert string to JS syntax and strip quotes, otherwise escape characters
+    // used in regexps are lost
+    const body = "return `" + JSON.stringify(template).slice(1, -1) + "`;";
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+    return new Function(...keys, body);
+  } catch (err) {
+    if (err instanceof SyntaxError)
+      throw new TemplateLiteralError(
+        `Error compiling template '${template}' with vars ${keys}: ${err.message}`,
+      );
+    throw err;
+  }
+}
+
+const memoizedBuildTemplateFunction = memoizeWithExc(TemplateLiteralError, buildTemplateFunction);
+
+/**
+ * Expand ES6 template literal dynamically
+ *
+ * NOTE: INSECURE!!! since all global variables/functions are available
+ */
+export function expandTemplateLiteral(template: string, vars: Record<string, unknown>): string {
+  const func = memoizedBuildTemplateFunction(Object.keys(vars), template);
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return func(...Object.values(vars));
+  } catch (err) {
+    throw new TemplateLiteralError(`Error expanding template '${template}': ${String(err)}`);
+  }
 }

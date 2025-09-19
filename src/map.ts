@@ -10,6 +10,13 @@ export interface MapLike<K, V> {
 }
 
 /**
+ * Similar to {@link MapLike} but `get()` always returns a value.
+ */
+export type DefaultMapLike<K, V> = Omit<MapLike<K, V>, "get"> & {
+  get: (key: K) => V;
+};
+
+/**
  * Allows mapping from arbitrary type by providing an adapter - function that converts from given
  * key type to key type that works with {@link Map}
  */
@@ -105,6 +112,29 @@ export class UniversalMap<K, V, A> implements Map<K, V> {
 
   get [Symbol.toStringTag](): string {
     return new Map(this)[Symbol.toStringTag];
+  }
+}
+
+/**
+ * Extends {@link MapAdapter} with default factory function
+ */
+export class DefaultMapAdapter<K, V, A = string>
+  extends MapAdapter<K, V, A>
+  implements DefaultMapLike<K, V>
+{
+  constructor(
+    adapter: (_: K) => A,
+    protected readonly factory: V | ((key: K) => V),
+  ) {
+    super(adapter);
+  }
+
+  override get(key: K): V {
+    let val = super.get(key);
+    if (val) return val;
+    val = this.factory instanceof Function ? this.factory(key) : this.factory;
+    this.set(key, val);
+    return val;
   }
 }
 
