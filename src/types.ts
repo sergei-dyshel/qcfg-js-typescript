@@ -8,11 +8,15 @@
 
 export { Optional } from "utility-types";
 
-export type AnyFunction = (...args: any[]) => any;
+export type AnyFunction<T extends any[] = any[], R = any> = (...args: T) => R;
+
+export type UnaryFunction<T = any, R = any> = AnyFunction<[T], R>;
 
 export type FunctionWithArgs = (arg: any, ...args: any) => any;
 
 export type AsyncFunction<T = unknown> = (...args: unknown[]) => Promise<T>;
+
+export type IdentityFunction<T> = UnaryFunction<T, T>;
 
 /**
  * Resolves only when for non-promise types.

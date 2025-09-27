@@ -91,6 +91,10 @@ export function dashesToUnderscores(str: string) {
   return str.replaceAll("-", "_");
 }
 
+export function underscoresToDashes(str: string) {
+  return str.replaceAll("_", "-");
+}
+
 /**
  * Thrown by {@link expandTemplateLiteral} in case of template literal compiling/expanding error
  */
