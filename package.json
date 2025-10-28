@@ -52,6 +52,7 @@
     "@sergei-dyshel/typescript": "*",
     "@types/json-stable-stringify": "^1.0.34",
     "@types/node": "^20.8.1",
+    "ajv": "^8.17.1",
     "async-mutex": "^0.4.0",
     "case-anything": "^2.1.13",
     "dataclass": "^2.1.1",
