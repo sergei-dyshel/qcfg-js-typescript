@@ -47,7 +47,9 @@ done
 shift "$((OPTIND - 1))"
 
 if [[ -n "$fail" ]]; then
-    if node "${loader_args[@]}" "${test_args[@]}" "${args[@]}" --test-reporter tap "$@" 2>&1 | grep '# pass' | grep -v 'pass 0'; then
+    # in node22, if there are no "only" tests, it will show
+    # test file as a passed test
+    if node "${loader_args[@]}" "${test_args[@]}" "${args[@]}" --test-reporter tap "$@" 2>&1 | grep '^ok 1' | grep -v '^ok 1 - .*\.ts$'; then
         echo "Some tests unexpectedly passed"
         exit 1
     fi
