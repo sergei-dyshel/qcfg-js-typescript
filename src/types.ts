@@ -60,6 +60,13 @@ export type Last<T extends [any, ...any[]]> = T extends [...infer _I, infer L] ?
 export type Tail<T extends [any, ...any[]]> = T extends [infer _I, ...infer A] ? A : never;
 
 export type AssertExtends<T, U> = T extends U ? T : never;
+
+export type Equals<X, Y> =
+  (<_T>() => X extends Y ? 1 : 2) extends <_T>() => Y extends X ? 1 : 2 ? true : false;
+
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+export type AssertTrue<_T extends true> = void;
+
 /**
  * Similar to {@link Required} but allow undefined for transformed optional properties
  *
