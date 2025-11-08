@@ -24,9 +24,7 @@
     "./shims": "./src/shims.ts",
     "./math": "./src/math.ts"
   },
-  "bin": {
-    "qcfg-test": "./scripts/qcfg-test"
-  },
+  "bin": {},
   "scripts": {
     "watch": "tsc --watch --noEmit"
   },
