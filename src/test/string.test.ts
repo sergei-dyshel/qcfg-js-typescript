@@ -1,24 +1,24 @@
 import { assertDeepEqual } from "../error";
 import { dashesToUnderscores, expandTemplateLiteral } from "../string";
-import { test } from "../testing";
+import { suite, test } from "../testing";
 
-void test("expandTemplateLiteral", async (t) => {
-  await t.test("no vars", () => {
+void suite("expandTemplateLiteral", () => {
+  void test("no vars", () => {
     const x = expandTemplateLiteral("5", {});
     assertDeepEqual(x, "5");
   });
 
-  await t.test("simple vars", () => {
+  void test("simple vars", () => {
     const x = expandTemplateLiteral("${x}${y}", { x: "str", y: 5 });
     assertDeepEqual(x, "str5");
   });
 
-  await t.test("imported funcs", () => {
+  void test("imported funcs", () => {
     const x = expandTemplateLiteral("${dashesToUnderscores(x)}", { dashesToUnderscores, x: "x-y" });
     assertDeepEqual(x, "x_y");
   });
 
-  await t.test("lots of vars", () => {
+  void test("lots of vars", () => {
     const vars: Record<string, unknown> = {};
     let str = "'argument'";
     for (let i = 0; i < 50; i++) {
