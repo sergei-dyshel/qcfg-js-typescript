@@ -76,15 +76,30 @@ export function expandTemplate(
 export function searchFirst(
   str: string,
   pattern: string | RegExp,
-): [start: number, length: number] | undefined {
+): [start: number, length: number, text: string] | undefined {
   if (typeof pattern === "string") {
     const start = str.indexOf(pattern);
     if (start === -1) return;
-    return [start, pattern.length];
+    return [start, pattern.length, pattern];
   }
   const match = pattern.exec(str);
   if (!match) return;
-  return [match.index, match[0].length];
+  return [match.index, match[0].length, match[0]];
+}
+
+export function searchLast(
+  str: string,
+  pattern: string | RegExp,
+): [start: number, length: number, text: string] | undefined {
+  if (typeof pattern === "string") {
+    const start = str.lastIndexOf(pattern);
+    if (start === -1) return;
+    return [start, pattern.length, pattern];
+  }
+  const matches = [...str.matchAll(pattern)];
+  if (matches.length === 0) return;
+  const match = matches[matches.length - 1];
+  return [match.index, match[0].length, match[0]];
 }
 
 export function dashesToUnderscores(str: string) {
