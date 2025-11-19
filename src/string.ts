@@ -71,6 +71,20 @@ export function expandTemplate(
 }
 
 /**
+ * Similar to Python's split https://docs.python.org/3.3/library/stdtypes.html#str.split
+ */
+export function split(str: string, separator: string | RegExp, maxSplit?: number): string[] {
+  if (maxSplit === undefined) return str.split(separator);
+  if (typeof separator === "string") {
+    const parts = str.split(separator);
+    return parts.slice(0, maxSplit).concat([parts.slice(maxSplit).join(separator)]);
+  }
+  // separator regexp
+  // STUB: implement using lastIndex: https://stackoverflow.com/questions/41723539/efficient-regexp-matching-starting-from-given-index-within-string
+  throw new Error("Not implemented");
+}
+
+/**
  * Search first occurence of pattern and return the match's [start, length]
  */
 export function searchFirst(
