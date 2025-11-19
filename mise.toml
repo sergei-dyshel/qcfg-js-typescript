@@ -1,0 +1,14 @@
+[env]
+MISE_EXPERIMENTAL = 1
+
+[task_config]
+includes = [
+    './mise.tasks.toml',
+    '../eslint-config/mise.tasks.toml',
+    '../prettier-config/mise.tasks.toml',
+]
+
+[tasks.build]
+description = 'No build task configured'
+run = 'echo No build task configured'
+

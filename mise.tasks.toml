@@ -1,0 +1,52 @@
+#:schema https://mise.jdx.dev/schema/mise-task.json
+
+[dpdm]
+description = 'Run cyclic dependency checker on all files'
+run = '''
+    #!/usr/bin/env bash
+    shopt -s globstar
+    dpdm --exit-code circular:1 --skip-dynamic-imports tree --no-warning --transform --no-tree src/**/*.ts
+'''
+
+# BUG: move test tasks to node package
+
+[test]
+wait_for = ["//packages/qcfg-js-node:build-prerequisites"]
+description = 'Run all tests in package'
+run = '''
+    #!/usr/bin/env bash
+    qcfg-build test --if-built --delete-if-fails $(find . -name '*.test.ts')
+'''
+
+[test-check-only]
+wait_for = ["//packages/qcfg-js-node:build-prerequisites"]
+description = 'Check that no tests are marked as "only"'
+run = '''
+    #!/usr/bin/env bash
+    set -o pipefail
+    if qcfg-build test --only --reporter tap $(find . -name '*.test.ts') | grep '^ok ' | grep -v '^ok .*\.test$'; then
+        echo "Found test files with tests marked as 'only'"
+        exit 1
+    fi
+'''
+
+[test-force]
+wait_for = ["//packages/qcfg-js-node:build-prerequisites"]
+description = 'Force-run all tests even if no files were changed'
+run = '''
+    #!/usr/bin/env bash
+    shopt -s globstar
+    qcfg-build test --force **/*.test.ts
+'''
+
+[compile]
+description = 'Run typescript compiler for all files'
+run = 'tsc --noEmit'
+
+[check]
+description = 'Run all possible code checks'
+depends = ['lint', 'format-check', 'dpdm']
+
+[release]
+description = 'Run all checks, tests and build everything'
+depends = ['check', 'test', 'build']
