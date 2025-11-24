@@ -45,7 +45,7 @@ run = 'tsc --noEmit'
 
 [check]
 description = 'Run all possible code checks'
-depends = ['lint', 'format-check', 'dpdm']
+depends = ['lint', 'format-check', 'compile', 'dpdm']
 
 [release]
 description = 'Run all checks, tests and build everything'
