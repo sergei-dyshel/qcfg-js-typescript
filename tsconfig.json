@@ -28,7 +28,6 @@
     "strictPropertyInitialization": true,
     "noFallthroughCasesInSwitch": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "plugins": [
       // { "name": "eslint-plugin-export-scope", "strictMode": false },
       { "name": "eslint-plugin-import-access" }
