@@ -50,11 +50,13 @@ export function omit(obj: any | undefined, ...keys: string[]): object | undefine
 }
 
 /** Map values of object, leaving keys intact. */
-export function mapValues<V, R>(
-  obj: Record<string, V>,
-  func: (k: string, v: V) => R,
-): Record<string, R> {
-  return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, func(key, value)]));
+export function mapValues<K extends string, V, R>(
+  obj: Record<K, V>,
+  func: (k: K, v: V) => R,
+): Record<K, R> {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [key, func(key as K, value as V)]),
+  ) as Record<K, R>;
 }
 
 /** Async version of {@link mapValues} */
@@ -106,9 +108,11 @@ export function mapKeysDeep(obj: any, func: (key: string) => string): any {
 /** Map both keys and values of object. */
 export function mapEntries<K1 extends string, V1, K2 extends string, R2>(
   obj: Record<K1, V1>,
-  func: (k: K1, v: V1) => readonly [K2, R2],
+  func: (k: K1, v: V1, index: number) => readonly [K2, R2],
 ): Record<K2, R2> {
-  const entries = Object.entries(obj).map(([key, value]) => func(key as K1, value as V1));
+  const entries = Object.entries(obj).map(([key, value], index) =>
+    func(key as K1, value as V1, index),
+  );
   return Object.fromEntries(entries) as Record<K2, R2>;
 }
 
