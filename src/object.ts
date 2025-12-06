@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { defaultCompare, mapAsync } from "./array";
-import type { Awaitable, Complete, Entries, PlainObject } from "./types";
+import type { Awaitable, Complete, Entries, PlainObject, StringKeyOf } from "./types";
 
 /** Return copy of object with undefined values removed */
 export function omitUndefinedValues<T extends object>(obj: T): T {
@@ -138,8 +138,8 @@ export function sortObjectKeys(obj: object) {
 }
 
 /** Typed version of {@link Object.keys} */
-export function objectKeys<T extends object>(obj: T): (keyof T)[] {
-  return Object.keys(obj) as (keyof T)[];
+export function objectKeys<T extends object>(obj: T): StringKeyOf<T>[] {
+  return Object.keys(obj) as StringKeyOf<T>[];
 }
 
 /**

@@ -1,6 +1,7 @@
 export * from "./cache";
 export * from "./dataclass";
 export * from "./disposable";
+export * as Flat from "./flat";
 export * from "./functional";
 export * as Html from "./html";
 export * from "./iterator";

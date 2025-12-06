@@ -51,7 +51,7 @@ export type RecordEntry<T> = T extends Record<infer K, infer V> ? [K, V] : never
 export type ElementType<T> = T extends ReadonlyArray<infer E> ? E : never;
 
 /** Type for {@link Object.entries} */
-export type Entries<T> = { [K in keyof T]: readonly [K, T[K]] }[keyof T][];
+export type Entries<T> = { [K in StringKeyOf<T>]: readonly [K, T[K]] }[StringKeyOf<T>][];
 
 /** Type of last element of tuple */
 export type Last<T extends [any, ...any[]]> = T extends [...infer _I, infer L] ? L : never;
@@ -107,7 +107,9 @@ export function extendsType<T>() {
 /**
  * Extracts only keys of type T that are assignable to type `string`.
  */
-export type StringKeyOf<T> = Extract<keyof T, string>;
+// export type StringKeyOf<T> = Extract<keyof T, string>;
+
+export type StringKeyOf<T> = keyof T & string;
 
 export type SnakeToCamelCase<S extends string> = S extends `${infer T}_${infer U}`
   ? `${T}${Capitalize<SnakeToCamelCase<U>>}`
@@ -146,3 +148,17 @@ export type Replace<T, U extends { [key in keyof T]: any }> = Omit<T, keyof U> &
  * Should return negative if `x < y`, 0 if `x = y` and positive if `x > y`.
  */
 export type CompareFunc<T> = (x: T, y: T) => number;
+
+/**
+ * Convert properties that can be undefined into optional.
+ *
+ * Also see
+ * https://stackoverflow.com/questions/56146819/typescript-how-to-transfrom-undefined-property-to-optional-property
+ */
+export type OptionalFromUndefined<T extends object> = {
+  // keys that can be undefined -> optional, without undefined
+  [K in keyof T as undefined extends T[K] ? K : never]?: Exclude<T[K], undefined>;
+} & {
+  // all other keys unchanged
+  [K in keyof T as undefined extends T[K] ? never : K]: T[K];
+};
