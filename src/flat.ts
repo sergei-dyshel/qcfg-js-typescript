@@ -76,6 +76,16 @@ export function create<S extends Schema>(schema: S) {
       }
     }
 
+    static match(obj: unknown): obj is Object<S> {
+      if (!isPlainObject(obj)) return false;
+      try {
+        this.validate(obj as Object<S>);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
     static stringify(obj: Object<S>, space?: string | number) {
       return JSON.stringify(this.parse(obj), undefined, space);
     }
@@ -181,7 +191,9 @@ export interface Class<S extends Schema> {
   // eslint-disable-next-line @typescript-eslint/unified-signatures
   extend<S1 extends Schema>(cls: Class<S1>): Class<S & S1>;
 
-  validate(obj: Object<S>, strict?: boolean): void;
+  validate(obj: Object<S>): void;
+
+  match(obj: unknown): obj is Object<S>;
 
   /**
    * Stable stringification - keys will appear in the same order as in schema
