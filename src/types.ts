@@ -162,3 +162,10 @@ export type OptionalFromUndefined<T extends object> = {
   // all other keys unchanged
   [K in keyof T as undefined extends T[K] ? never : K]: T[K];
 };
+
+/** Check if function is constructor (not 100% accurate) */
+export function isConstructor(func: Function) {
+  // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  return !!func.prototype && func.prototype.constructor === func;
+}
