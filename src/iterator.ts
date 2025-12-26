@@ -35,6 +35,12 @@ export namespace Iterator {
     }
   }
 
+  export function* map<T>(iter: IterableIterator<T>, fn: (value: T) => T) {
+    for (const value of iter) {
+      yield fn(value);
+    }
+  }
+
   export function* filter<T>(iter: IterableIterator<T>, predicate: (value: T) => boolean) {
     for (const value of iter) {
       if (predicate(value)) yield value;
