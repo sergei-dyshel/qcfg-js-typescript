@@ -71,7 +71,11 @@ export function expandTemplate(
 }
 
 /**
- * Similar to Python's split https://docs.python.org/3.3/library/stdtypes.html#str.split
+ * Similar to Python's split https://docs.python.org/3/library/stdtypes.html#str.split
+ *
+ * If `maxSplit` is given, at most `maxSplit` splits are done (thus, the list will have at most
+ * `maxSplit+1` elements). If `maxSplit` is not specified or -1, then there is no limit on the
+ * number of splits (all possible splits are made).
  */
 export function split(str: string, separator: string | RegExp, maxSplit?: number): string[] {
   if (maxSplit === undefined) return str.split(separator);
