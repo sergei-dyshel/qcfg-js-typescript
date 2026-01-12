@@ -76,7 +76,7 @@ export class SetAdapter<T, A> implements globalThis.Set<T> {
     for (const value of this.values()) callbackfn.call(thisArg, value, value, this);
   }
 
-  *entries(): IterableIterator<[T, T]> {
+  *entries(): SetIterator<[T, T]> {
     for (const value of this.values()) yield [value, value];
   }
 
@@ -87,7 +87,7 @@ export class SetAdapter<T, A> implements globalThis.Set<T> {
     return this.map.values();
   }
 
-  [Symbol.iterator](): IterableIterator<T> {
+  [Symbol.iterator](): SetIterator<T> {
     return this.values();
   }
 

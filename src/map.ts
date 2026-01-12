@@ -90,15 +90,15 @@ export class UniversalMap<K, V, A> implements Map<K, V> {
     return this.map.size;
   }
 
-  *entries(): IterableIterator<[K, V]> {
+  *entries(): MapIterator<[K, V]> {
     for (const entry of this.map.values()) yield [entry.key, entry.value];
   }
 
-  *values() {
+  *values(): MapIterator<V> {
     for (const entry of this.map.values()) yield entry.value;
   }
 
-  *keys(): IterableIterator<K> {
+  *keys(): MapIterator<K> {
     for (const entry of this.map.values()) yield entry.key;
   }
 
@@ -106,7 +106,7 @@ export class UniversalMap<K, V, A> implements Map<K, V> {
     for (const entry of this.map.values()) callbackfn.call(thisArg, entry.value, entry.key, this);
   }
 
-  [Symbol.iterator](): IterableIterator<[K, V]> {
+  [Symbol.iterator](): MapIterator<[K, V]> {
     return this.entries();
   }
 
