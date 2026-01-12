@@ -79,9 +79,9 @@
     "zod-validation-error": "^3.3.0"
   },
   "overrides": {
-    "typescript": "~5.5.3"
+    "typescript": "~5.9.3"
   },
   "peerDependencies": {
-    "typescript": "~5.5.3"
+    "typescript": "~5.9.3"
   }
 }
