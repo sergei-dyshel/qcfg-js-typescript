@@ -291,13 +291,18 @@ export function pairIter<T>(array: readonly T[]) {
 }
 
 /** Sort by key extracted from operands */
-export function sortByKey<T>(array: T[], keyFn: (_: T) => any, compareFn?: CompareFunc<any>) {
+export function sortByKey<T, K>(array: T[], keyFn: (_: T) => K, compareFn?: CompareFunc<K>) {
   const cmp = compareFn ?? defaultCompare;
   return array.sort((a: T, b: T) => cmp(keyFn(a), keyFn(b)));
 }
 
 export function arraySorted<T>(array: T[], cmp?: CompareFunc<T>): T[] {
   return array.slice().sort(cmp);
+}
+
+/** Sort elements so that keys will be ordered as in given array */
+export function sortInKeyOrder<T, K>(array: T[], keyFn: (_: T) => K, keys: K[]) {
+  return sortByKey(array, keyFn, (k1, k2) => defaultCompare(keys.indexOf(k1), keys.indexOf(k2)));
 }
 
 /**
