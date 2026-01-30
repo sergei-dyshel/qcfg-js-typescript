@@ -38,6 +38,16 @@ export type AwaitedUnion<T, U> = T extends Promise<infer R> ? Promise<R | U> : T
 /** Make only specific properties required, combines {@link Pick} and {@link Required} */
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
+/**
+ * Deep(nested) variation of {@link Required}.
+ *
+ * Taken from
+ * https://stackoverflow.com/questions/57835286/deep-recursive-requiredt-on-specific-properties.
+ */
+export type DeepRequired<T> = Required<{
+  [K in keyof T]: T[K] extends Required<T[K]> ? T[K] : DeepRequired<T[K]>;
+}>;
+
 /** For use with objects that are not a class */
 export type PlainObject = Record<string, unknown>;
 
@@ -90,7 +100,14 @@ export type Complete<T> = {
 };
 
 /**
- * Useful for making sure value's type extends given type without loosing type information
+ * Useful for making sure value's type extends (satisfies) given type without loosing type
+ * information.
+ *
+ * It serves the same purpose as new Typescript 4.9 `satisfies` keyword.
+ *
+ * See:
+ *
+ * - https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator
  *
  * ```ts
  * const x = extendsType<string>()("hello");
