@@ -341,3 +341,14 @@ export function forEachReverse<T>(
     return undefined;
   }, undefined);
 }
+
+/**
+ * Construct sparse array out of (index, value) pairs
+ *
+ * See https://www.freecodecamp.org/news/sparse-and-dense-arrays-in-javascript/ for more details.
+ */
+export function sparseArray<T>(elements: Iterable<[number, T]>): T[] {
+  const arr: T[] = [];
+  for (const [index, value] of elements) arr[index] = value;
+  return arr;
+}
