@@ -1,12 +1,9 @@
-/** Extends built-in {@link Set} with helper instance and static methods */
-export class Set<T> extends global.Set<T> {
-  addFrom(iterable: Iterable<T>) {
-    for (const value of iterable) this.add(value);
-  }
+export function setEqual<T>(set1: Set<T>, set2: Set<T>) {
+  return set1.symmetricDifference(set2).size === 0;
+}
 
-  toArray() {
-    return [...this];
-  }
+export function setAddFrom<T>(set: Set<T>, from: Iterable<T>) {
+  for (const value of from) set.add(value);
 }
 
 // Copied from lib.esnext.collection.d.ts to resolve TS errors
