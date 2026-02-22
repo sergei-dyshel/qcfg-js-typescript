@@ -1,4 +1,4 @@
-import dedent from "ts-dedent";
+import { default as dedent } from "ts-dedent";
 import { memoizeWithExc } from "./memoize";
 export { camelCase, kebabCase, snakeCase } from "case-anything";
 

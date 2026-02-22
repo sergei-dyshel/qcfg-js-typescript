@@ -6,7 +6,7 @@
  *   - https://github.com/sindresorhus/type-fest
  */
 
-export { Optional } from "utility-types";
+export { type Optional } from "utility-types";
 
 export type AnyFunction<T extends any[] = any[], R = any> = (...args: T) => R;
 

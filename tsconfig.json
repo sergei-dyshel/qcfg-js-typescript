@@ -3,8 +3,8 @@
     // https://stackoverflow.com/questions/59787574/typescript-tsconfig-settings-for-node-js-12/59787575#59787575
     "composite": true,
     "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "outDir": "${configDir}/out",
     "rootDir": "${configDir}/src",
     "incremental": true,
