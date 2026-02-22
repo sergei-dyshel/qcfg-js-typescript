@@ -2,6 +2,7 @@
   "name": "@sergei-dyshel/typescript",
   "version": "1.0.0",
   "description": "Personal library for typescript",
+  "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./enum": "./src/enum.ts",
@@ -45,7 +46,7 @@
     "@sergei-dyshel/prettier-config": "*",
     "dpdm": "^3.14.0",
     "just-install": "^2.0.2",
-    "tsx": "^4.19.2"
+    "tsx": "^4.21.0"
   },
   "dependencies": {
     "@sergei-dyshel/typescript": "*",
