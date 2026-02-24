@@ -5,6 +5,10 @@ description = 'Run cyclic dependency checker on all files'
 run = '''
     #!/usr/bin/env bash
     shopt -s globstar
+    if [[ -f .no-dpdm ]]; then
+        echo "dpdm disabled in this repo"
+        exit 0
+    fi
     dpdm --exit-code circular:1 --skip-dynamic-imports tree --no-warning --transform --no-tree src/**/*.ts
 '''
 
@@ -15,7 +19,7 @@ wait_for = ["//packages/qcfg-js-node:build-prerequisites"]
 description = 'Run all tests in package'
 run = '''
     #!/usr/bin/env bash
-    qcfg-build test --if-built --delete-if-fails $(find . -name '*.test.ts')
+    qcfg-build test --if-built --delete-if-fails $(find . -name '*.test.ts' -not \( -path "*/node_modules/*" -prune \))
 '''
 
 [test-check-only]
@@ -50,3 +54,4 @@ depends = ['lint', 'format-check', 'compile', 'dpdm']
 [release]
 description = 'Run all checks, tests and build everything'
 depends = ['check', 'test', 'build']
+
