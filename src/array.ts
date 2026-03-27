@@ -203,40 +203,6 @@ export function normalizeArray<T>(x: Arrayable<T>): T[] {
 }
 
 /**
- * Binary search value and return its index.
- *
- * `mode` determines how to act when there is no exact match.
- *
- * In `left` mode return LARGEST `i` so that `a[i] <= x`. If already `a[0] > x`, return `0`.
- *
- * In `right` mode return SMALLEST `i` so that `a[i] >= x`. If already `a[n-1] < x`, return `n`.
- *
- * XXX: currently unused
- */
-export function binarySearch<T>(
-  this: ReadonlyArray<T>,
-  value: T,
-  compare = numberCompare,
-  mode: "left" | "right" = "right",
-): number {
-  let left = 0;
-  let right = this.length;
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-    const cmp = compare(this[mid], value);
-
-    if (mode === "left") {
-      if (cmp > 0) right = mid;
-      left = mid + 1;
-    } else {
-      if (cmp < 0) left = mid + 1;
-      right = mid;
-    }
-  }
-  return left;
-}
-
-/**
  * Indexes of all elements equal to given one See {@link Array.indexOf}.
  */
 export function allIndexesOf<T>(array: T[], searchElement: T, fromIndex?: number): number[] {

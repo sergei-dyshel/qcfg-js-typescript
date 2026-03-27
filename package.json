@@ -24,7 +24,8 @@
     "./iterator": "./src/iterator.ts",
     "./shims": "./src/shims.ts",
     "./math": "./src/math.ts",
-    "./aws": "./src/aws/index.ts"
+    "./aws": "./src/aws/index.ts",
+    "./algo": "./src/algo.ts"
   },
   "bin": {},
   "scripts": {
