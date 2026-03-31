@@ -87,7 +87,12 @@ export function div(attrs: { class?: "column" | "row" } & TagAttrs, inner: strin
   return tag("div", attrs, inner, padded);
 }
 
-export function copyButton(text: string, label = "copy", tooltip = "Copy to clipboard") {
+/**
+ * Button to copy text to clipboard.
+ *
+ * @param tooltip If `null`, use copied text as a tooltip.
+ */
+export function copyButton(text: string, label = "copy", tooltip?: string | null) {
   // use combination of style/href so that cursor shape changes but without underline
   // return anchor('📋', {
   // 	style: 'text-decoration: inherit',
@@ -101,7 +106,7 @@ export function copyButton(text: string, label = "copy", tooltip = "Copy to clip
     {
       type: "button",
       style: "padding: 0; margin: 0; line-height: normal",
-      title: tooltip,
+      title: tooltip === null ? text : (tooltip ?? "Copy to clipboard"),
       text,
       onclick: "copyText(event)",
     },
