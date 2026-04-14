@@ -1,8 +1,11 @@
 import { deepEqual } from "node:assert";
-import type { AnyFunction, AwaitedUnion } from "./types";
+import type { AnyFunction, AwaitedUnion, ConstructorOf } from "./types";
 
 export { rejects as assertRejects, throws as assertThrows } from "node:assert/strict";
 
+/**
+ * Error that supports storing additional data for logging purposes.
+ */
 export class LoggableError extends Error {
   data?: unknown[];
   protected static namePrefix?: string;
@@ -36,30 +39,56 @@ export class LoggableError extends Error {
 }
 
 /**
- * Traverses exception stack (using {@link Error.cause} property) and finds the first exception for
- * which given function returns non-null value.
- *
- * Useful to check if certain exception was originally caused by another exception.
+ * Should be used for asserting logic invariants in code
  */
-export function errorCausedBy<T>(
-  err: unknown,
-  getReason: (err: unknown) => T | undefined,
-): T | undefined {
-  const reason = getReason(err);
-  if (reason) return reason;
-  if (err instanceof Error) {
-    const reason = errorCausedBy(err.cause, getReason);
-    if (reason) return reason;
-  }
-  return undefined;
-}
-
 export class AssertionError extends LoggableError {
   constructor(message = "Assertion failed", ...data: unknown[]) {
     super(message, { data });
   }
 }
 
+/**
+ * Thrown when users cancels operation.
+ */
+export class UserCancelError extends Error {
+  constructor(cause?: unknown) {
+    super("User cancelled the operation", { cause });
+  }
+
+  static causeOf(err: unknown): boolean {
+    return !!causedByInstance(err, UserCancelError);
+  }
+}
+
+/**
+ * Traverses exception stack (using {@link Error.cause} property) and finds the first exception for
+ * which given function returns non-null value.
+ *
+ * Useful to check if certain exception was originally caused by another exception.
+ */
+export function causedByReason<T>(
+  err: unknown,
+  getReason: (err: unknown) => T | undefined,
+): T | undefined {
+  const reason = getReason(err);
+  if (reason) return reason;
+  if (err instanceof Error) {
+    const reason = causedByReason(err.cause, getReason);
+    if (reason) return reason;
+  }
+  return undefined;
+}
+
+export function causedByInstance<T, C extends ConstructorOf<T>>(
+  err: unknown,
+  cls: C,
+): T | undefined {
+  return causedByReason(err, (err) => (err instanceof cls ? err : undefined));
+}
+
+/**
+ * Throw assertion error unconditionally.
+ */
 export function fail(message: string, ...data: unknown[]): never {
   throw new AssertionError(message, ...data);
 }
@@ -74,15 +103,18 @@ export function assert(
   }
 }
 
+/**
+ * Type-safe variant of {@link deepEqual} for use in testing.
+ */
 export function assertDeepEqual<T>(actual: T, expected: T) {
   deepEqual(actual, expected);
 }
 
-const errorFormatters: {
-  cls: new (...args: unknown[]) => Error;
-  format: (error: any) => string;
-}[] = [];
-
+/**
+ * Register custom error class formatter.
+ *
+ * Used by {@link formatError}.
+ */
 export function registerErrorFormatter<E extends Error, C extends new (...args: any[]) => E>(
   cls: C,
   format: (error: E) => string,
@@ -126,21 +158,17 @@ export function assertNotNull<T>(
   assert(val !== undefined && val !== null, message, ...data);
 }
 
+/**
+ * Assert that value is not null and return it, for use in expressions
+ */
 export function notNull<T>(val: T, message?: string, ...args: unknown[]): NonNullable<T> {
   assertNotNull(val, message, ...args);
   return val;
 }
 
-export class AbortError extends Error {
-  constructor(cause?: unknown) {
-    super("User cancelled the operation", { cause });
-  }
-
-  static is(err: unknown): boolean {
-    return err instanceof AbortError || (err instanceof Error && AbortError.is(err.cause));
-  }
-}
-
+/**
+ * Asserts value is instance of given class.
+ */
 export function assertInstanceOf<T, C extends T>(
   value: T,
   cls: Function & { prototype: C },
@@ -160,6 +188,9 @@ export function assertInstanceOf<T, C extends T>(
   fail(message, ...data);
 }
 
+/**
+ * Asserts value is instance of given class and returns it.
+ */
 export function asInstanceOf<T, C extends T>(value: T, cls: Function & { prototype: C }): C {
   assertInstanceOf(value, cls);
   return value as C;
@@ -178,3 +209,8 @@ export function wrapWithCatch<F extends AnyFunction, R>(
     }
   }) as unknown as (...funcArgs: Parameters<F>) => AwaitedUnion<ReturnType<F>, R>;
 }
+
+const errorFormatters: {
+  cls: new (...args: unknown[]) => Error;
+  format: (error: any) => string;
+}[] = [];
