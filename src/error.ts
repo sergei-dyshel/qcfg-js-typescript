@@ -8,6 +8,8 @@ export { rejects as assertRejects, throws as assertThrows } from "node:assert/st
  */
 export class LoggableError extends Error {
   data?: unknown[];
+
+  /** Prefix (e.g. namespace) to prepend to error name */
   protected static namePrefix?: string;
 
   constructor(
@@ -18,9 +20,11 @@ export class LoggableError extends Error {
     },
   ) {
     super(message, { cause: options?.cause });
+    this.data = options?.data;
+
+    // get real subclass name in case of inherited constructor
     const self = this.constructor as unknown as typeof LoggableError;
     this.name = (self.namePrefix ?? "") + self.name;
-    this.data = options?.data;
   }
 
   static wrap(cause: unknown, message: string, ...data: unknown[]) {
@@ -39,7 +43,9 @@ export class LoggableError extends Error {
 }
 
 /**
- * Should be used for asserting logic invariants in code
+ * Should be used for asserting logic invariants in code.
+ *
+ * When this error is thrown, it means there is a bug in the code.
  */
 export class AssertionError extends LoggableError {
   constructor(message = "Assertion failed", ...data: unknown[]) {
@@ -48,15 +54,33 @@ export class AssertionError extends LoggableError {
 }
 
 /**
- * Thrown when users cancels operation.
+ * Non-critical exception that usually abort flow.
+ *
+ * Must supply message, that will be shown to user.
+ *
+ * Also can override severity between `error/warn` that will apply to logging/notification.
  */
-export class UserCancelError extends Error {
-  constructor(cause?: unknown) {
-    super("User cancelled the operation", { cause });
+export class NonCriticalError extends LoggableError {
+  constructor(
+    message: string,
+    protected options?: { severity?: "warn" | "error"; data?: unknown[] },
+  ) {
+    super(message, { data: options?.data });
   }
 
-  static causeOf(err: unknown): boolean {
-    return !!causedByInstance(err, UserCancelError);
+  get severity() {
+    return this.options?.severity ?? "error";
+  }
+}
+
+/**
+ * Thrown when users cancels operation.
+ *
+ * Can be logged but should not be shown to user directly.
+ */
+export class UserCancelError extends NonCriticalError {
+  constructor(message: string) {
+    super(message, { severity: "warn" });
   }
 }
 
@@ -79,10 +103,7 @@ export function causedByReason<T>(
   return undefined;
 }
 
-export function causedByInstance<T, C extends ConstructorOf<T>>(
-  err: unknown,
-  cls: C,
-): T | undefined {
+export function causedByInstance<T>(err: unknown, cls: ConstructorOf<T>): T | undefined {
   return causedByReason(err, (err) => (err instanceof cls ? err : undefined));
 }
 
@@ -194,6 +215,21 @@ export function assertInstanceOf<T, C extends T>(
 export function asInstanceOf<T, C extends T>(value: T, cls: Function & { prototype: C }): C {
   assertInstanceOf(value, cls);
   return value as C;
+}
+
+/**
+ * Similar to {@link assert} but thorws non-critical exception that should be presented to user in
+ * non-disruptive way.
+ */
+export function check(condition: boolean, message: string): asserts condition {
+  if (!condition) throw new NonCriticalError(message, { severity: "warn" });
+}
+
+/**
+ * See {@link check}.
+ */
+export function checkNotNull<T>(val: T, message: string): asserts val is NonNullable<T> {
+  if (val === undefined || val === null) throw new NonCriticalError(message);
 }
 
 export function wrapWithCatch<F extends AnyFunction, R>(
