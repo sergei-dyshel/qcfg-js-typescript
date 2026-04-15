@@ -23,6 +23,20 @@ export function arrayRemove<T>(array: T[], item: T): boolean {
   return false;
 }
 
+/**
+ * Remove first element matching condition.
+ *
+ * Return true if found.
+ */
+export function arrayRemoveFirstOf<T>(array: T[], cond: (val: T) => boolean): boolean {
+  const index = array.findIndex(cond);
+  if (index != -1) {
+    array.splice(index, 1);
+    return true;
+  }
+  return false;
+}
+
 export function arrayFirstOf<T>(array: readonly T[], cond: (val: T) => boolean): T | undefined {
   const idx = array.findIndex(cond);
   if (idx === -1) return undefined;
