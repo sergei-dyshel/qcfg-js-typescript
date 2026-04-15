@@ -7,6 +7,7 @@ export * as Html from "./html";
 export * from "./iterator";
 export * from "./json";
 export * from "./lock";
+export * from "./lock-fn";
 export * as Markdown from "./markdown";
 export * from "./memoize";
 export * from "./misc";

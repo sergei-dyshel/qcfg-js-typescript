@@ -1,10 +1,10 @@
-import { Mutex } from "async-mutex";
+import { Mutex as AsyncMutex, type MutexInterface } from "async-mutex";
 import { DefaultMap } from "./map";
 import type { Awaitable } from "./types";
 
 export { Semaphore } from "async-mutex";
 
-export class Lock extends Mutex {
+export class Lock extends AsyncMutex {
   async with<T>(f: () => Awaitable<T>) {
     const release = await this.acquire();
     try {
@@ -12,6 +12,23 @@ export class Lock extends Mutex {
     } finally {
       release();
     }
+  }
+}
+
+class MutexHandle implements AsyncDisposable {
+  constructor(private readonly releaser: MutexInterface.Releaser) {}
+  [Symbol.asyncDispose]() {
+    this.releaser();
+    return Promise.resolve();
+  }
+}
+
+export class Mutex extends AsyncMutex {
+  get lockFn() {
+    return async () => {
+      const releaser = await this.acquire();
+      return new MutexHandle(releaser);
+    };
   }
 }
 
