@@ -11,6 +11,7 @@
  *   `Symbol.dispose` would be enough.
  */
 
+import { setTimeout } from "node:timers/promises";
 import type { Awaitable } from "./types";
 
 /**
@@ -26,6 +27,12 @@ export type LockFnHandle = AsyncDisposable;
  * Lock function that returns a "handle" object.
  */
 export type LockFn<H extends LockFnHandle = LockFnHandle> = () => Awaitable<H>;
+
+/**
+ * Lock function that is expected to return without acquiring (d.e. due to timeout or bailing out
+ * early).
+ */
+export type TryLockFn<H extends LockFnHandle = LockFnHandle> = () => Awaitable<H | undefined>;
 
 export async function withLockFn<H extends LockFnHandle, T>(
   lockFn: LockFn<H>,
@@ -79,5 +86,33 @@ export function lockFnWithHooks(
         }
       },
     };
+  };
+}
+
+/**
+ * Create lock function that aborts waiting after certain period of time.
+ *
+ * Requires base lock with cancellation mechanism. Cancel function is supposed to be sync and simple
+ * and do not throw (e.g. `AbortSignal.abort`).
+ */
+export function lockFnWithTimeout(
+  lockFn: LockFn,
+  cancelFn: () => void,
+  timeoutMs: number,
+): TryLockFn {
+  return async () => {
+    const promise = lockFn();
+    const handle = await Promise.race([promise, setTimeout(timeoutMs)]);
+    // lockFn acquired
+    if (handle) return handle;
+
+    cancelFn();
+    try {
+      // lockFn returned despite cancellation, means acquired
+      return await promise;
+    } catch (err) {
+      // ignore error
+      return undefined;
+    }
   };
 }
