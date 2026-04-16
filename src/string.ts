@@ -70,6 +70,76 @@ export function expandTemplate(
   });
 }
 
+// REFACTOR: disallow undefined argument (can be done with callIfDefined)
+export function parseNumber(s: string): number;
+export function parseNumber(s: string | undefined): number | undefined;
+export function parseNumber(s: string | undefined, default_: number): number;
+export function parseNumber(s: string | undefined, default_?: number): number | undefined {
+  if (s === undefined) return default_;
+  const num = Number(s);
+  if (Number.isNaN(num) || s === "") throw new Error(`${s} is not a number`);
+  return num;
+}
+
+export function buildFuzzyPattern(query: string): string {
+  const goodChars = query.replaceAll(/\W/g, "");
+  return [...goodChars].join(".*");
+}
+
+export function fuzzyMatch(text: string, query: string): boolean {
+  return text.search(new RegExp(buildFuzzyPattern(query), "i")) !== -1;
+}
+
+export function buildAbbrevPattern(query: string): string {
+  const goodChars = query.replaceAll(/\W/g, "");
+  const midPattern = [...goodChars]
+    .map((ch) => {
+      if (/[A-Za-z]/.test(ch)) {
+        const lower = ch.toLowerCase();
+        const upper = ch.toUpperCase();
+        const anyCase = `(.*[^a-zA-Z])?[${lower}${upper}]`;
+        const camelCase = `(.*[^A-Z])?${upper}`;
+        return `(${anyCase}|${camelCase})`;
+      }
+      if (/\d+/.test(ch)) {
+        return `(.*[^0-9])?${ch}`;
+      }
+      return `.*${ch}`;
+    })
+    .join("");
+  return "^" + midPattern + ".*";
+}
+
+export function abbrevMatch(text: string, query: string): boolean {
+  return text.search(new RegExp(buildAbbrevPattern(query))) !== -1;
+}
+
+// REFACTOR: merge this with split function below (see the STUB comment)
+export function splitWithRemainder(str: string, regex: RegExp, limit: number): string[] {
+  const result: string[] = [];
+  while (str && limit) {
+    const match = regex.exec(str);
+    if (!match?.index) {
+      result.push(str);
+      break;
+    }
+    if (match[0].length === 0) throw new Error("Empty match inside split");
+    result.push(str.slice(0, Math.max(0, match.index)));
+    str = str.slice(Math.max(0, match.index + match[0].length));
+    limit -= 1;
+  }
+  if (str !== "" || result.length === 0) result.push(str);
+  return result;
+}
+
+export function ellipsize(str: string, maxLen: number, options?: { delimiter?: string }): string {
+  if (str.length <= maxLen) return str;
+  const delimiter = options?.delimiter ?? "...";
+  const left = Math.ceil(maxLen / 2);
+  const right = maxLen - left;
+  return str.slice(0, left) + delimiter + str.slice(str.length - right);
+}
+
 /**
  * Similar to Python's split https://docs.python.org/3/library/stdtypes.html#str.split
  *
