@@ -32,7 +32,7 @@ export type Awaitable<T> = T | Promise<T>;
 
 export type Awaited<T> = T extends Promise<infer U> ? U : T;
 
-// REFACTOR: find a proper name
+/** Add type `U` (e.g. null/undefined) into awaited type */
 export type AwaitedUnion<T, U> = T extends Promise<infer R> ? Promise<R | U> : T | U;
 
 /** Make only specific properties required, combines {@link Pick} and {@link Required} */

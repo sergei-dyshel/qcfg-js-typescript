@@ -51,6 +51,8 @@ run = 'tsc --noEmit'
 description = 'Run all possible code checks'
 depends = ['lint', 'format-check', 'compile', 'dpdm']
 
+# REFACTOR: move to node
+
 [release]
 description = 'Run all checks, tests and build everything'
 depends = ['check', 'test', 'build']
