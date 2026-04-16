@@ -13,4 +13,5 @@ export * from "./memoize";
 export * from "./misc";
 export * from "./regex";
 export * as Unicode from "./unicode";
+export * from "./stringify";
 export * from "./yaml";
