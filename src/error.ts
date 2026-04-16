@@ -171,6 +171,14 @@ export function formatError(
   return String(error);
 }
 
+export function assertNull<T>(
+  val: T | undefined | null,
+  message = "Value is not null/undefined",
+  ...data: unknown[]
+) {
+  assert(val == null, message, ...data);
+}
+
 export function assertNotNull<T>(
   val: T,
   message = "Value is undefined/null",
