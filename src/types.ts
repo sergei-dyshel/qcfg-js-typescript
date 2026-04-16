@@ -14,7 +14,14 @@ export type UnaryFunction<T = any, R = any> = AnyFunction<[T], R>;
 
 export type FunctionWithArgs = (arg: any, ...args: any) => any;
 
-export type AsyncFunction<T = unknown> = (...args: unknown[]) => Promise<T>;
+export type AsyncFunction<T = any> = (...args: any[]) => Promise<T>;
+
+/**
+ * NOTE: Must used `undefined` because just using `void` wouldn't work, see
+ * https://stackoverflow.com/questions/57951850/is-there-not-promise-type-in-typescipt
+ */
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+export type VoidFunction = (...args: any[]) => void | undefined;
 
 export type IdentityFunction<T> = UnaryFunction<T, T>;
 
@@ -185,4 +192,17 @@ export function isConstructor(func: Function) {
   // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return !!func.prototype && func.prototype.constructor === func;
+}
+
+export type FirstParameter<T extends (arg1: any, ...args: any) => any> = T extends (
+  arg1: infer P,
+  ...args: any
+) => any
+  ? P
+  : never;
+
+export function discardReturn<T extends AnyFunction>(func: T): (...args: Parameters<T>) => void {
+  return (...args: Parameters<T>) => {
+    func(...args);
+  };
 }
