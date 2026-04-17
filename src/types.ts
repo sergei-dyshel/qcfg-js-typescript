@@ -206,3 +206,13 @@ export function discardReturn<T extends AnyFunction>(func: T): (...args: Paramet
     func(...args);
   };
 }
+
+/**
+ * Type that matches any type except for array
+ *
+ * See
+ * https://stackoverflow.com/questions/61148466/typescript-type-that-matches-any-object-but-not-arrays
+ */
+export type NotArray = (Record<string, unknown> | string | bigint | number | boolean) & {
+  length?: never;
+};

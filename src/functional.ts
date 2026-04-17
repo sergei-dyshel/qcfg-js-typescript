@@ -11,3 +11,14 @@ export function pipe2<F1 extends AnyFunction, F2 extends UnaryFunction<ReturnTyp
 export function identity<T>(arg: T): T {
   return arg;
 }
+
+/**
+ * Takes function that does not accept undefined argument and returns function that accepts it and
+ * returns undefined in that case
+ */
+export function liftOptional<T, Q>(f: (x: T) => Q): (x: T | undefined) => Q | undefined {
+  return (x: T | undefined): Q | undefined => {
+    if (x !== undefined) return f(x);
+    return x as undefined;
+  };
+}

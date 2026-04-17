@@ -2,6 +2,25 @@ import { fail } from "./error";
 import { Iterator } from "./iterator";
 import type { Arrayable, CompareFunc, ConstructorOf } from "./types";
 
+export function diffArrays<T>(
+  a: T[],
+  b: T[],
+  equal: (x: T, y: T) => boolean,
+): [onlyA: T[], onlyB: T[], common: T[]] {
+  const onlyA: T[] = [];
+  const onlyB: T[] = [];
+  const common: T[] = [];
+
+  for (const x of a) {
+    if (b.filter((y) => equal(x, y)).length === 0) onlyA.push(x);
+    else common.push(x);
+  }
+  for (const y of b) {
+    if (a.filter((x) => equal(x, y)).length === 0) onlyB.push(y);
+  }
+  return [onlyA, onlyB, common];
+}
+
 /**
  * Return array or pariwise combinations of two arrays
  *

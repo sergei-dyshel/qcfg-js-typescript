@@ -33,3 +33,9 @@ export function escapeRegExp(s: string) {
   const reHasRegExpChar = RegExp(reRegExpChar.source);
   return s && reHasRegExpChar.test(s) ? s.replace(reRegExpChar, "\\$&") : s;
 }
+
+const emptyRegExp = /(?:)/;
+
+export function isEmptyRegExp(re: RegExp) {
+  return re.source === emptyRegExp.source;
+}

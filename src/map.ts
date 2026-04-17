@@ -138,17 +138,20 @@ export class DefaultMapAdapter<K, V, A = string>
   }
 }
 
+/** Mapping with default values */
 export class DefaultMap<K, V> extends Map<K, V> {
-  constructor(protected readonly func: (_: K) => V) {
+  /**
+   * `factory` - either default value and function that receives key and returns a value
+   */
+  constructor(protected readonly factory: V | ((key: K) => V)) {
     super();
   }
 
-  override get(k: K): V {
-    let value = super.get(k);
-    if (value === undefined) {
-      value = this.func(k);
-      this.set(k, value);
-    }
-    return value;
+  override get(key: K): V {
+    let val = super.get(key);
+    if (val) return val;
+    val = this.factory instanceof Function ? this.factory(key) : this.factory;
+    this.set(key, val);
+    return val;
   }
 }
