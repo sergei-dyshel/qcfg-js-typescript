@@ -1,7 +1,7 @@
 export const RED_FLAG = "🚩";
 export const CHEQUERED_FLAG = "🏁";
 export const CHECK_MARK_BUTTON = "✅";
-export const CROSS_MARK = "❎";
+export const CROSS_MARK_BUTTON = "❎";
 export const MEMO = "📝";
 export const SPEECH_BALLOON = "💬";
 export const FULLWIDTH_PLUS = "＋";
@@ -17,3 +17,4 @@ export const FLOPPY_DISK = "💾";
 export const STAR = "⭐";
 export const BABY_CHICK = "🐥";
 export const EM_SPACE = " "; // just a whitespace
+export const CROSS_MARK = "❌";
