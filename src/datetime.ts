@@ -1,4 +1,17 @@
-export { format as formatDate } from "date-fns";
+import { format, type FormatOptions } from "date-fns";
+
+export const DEFAULT_DATE_FORMAT_STR = "yyyy-MM-dd HH:mm";
+
+/**
+ * Like {@link format} but with default format string ({@link DEFAULT_DATE_FORMAT_STR})}
+ */
+export function formatDate<DateType extends Date>(
+  date: DateType | number | string,
+  formatStr?: string,
+  options?: FormatOptions,
+): string {
+  return format(date, formatStr ?? DEFAULT_DATE_FORMAT_STR, options);
+}
 
 export function epochToDate(epoch: number) {
   const date = new Date(0);

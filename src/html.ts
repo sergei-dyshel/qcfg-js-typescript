@@ -207,7 +207,7 @@ export function relativeTime(date: Date) {
     anchor(italic(""), {
       id,
       style: "text-decoration: inherit; color: inherit",
-      title: formatDate(date, "yyyy-MM-dd HH:mm"),
+      title: formatDate(date),
     }) +
     tag(
       "script",
