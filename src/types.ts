@@ -78,8 +78,9 @@ export type Tail<T extends [any, ...any[]]> = T extends [infer _I, ...infer A] ?
 
 export type AssertExtends<T, U> = T extends U ? T : never;
 
-export type Equals<X, Y> =
-  (<_T>() => X extends Y ? 1 : 2) extends <_T>() => Y extends X ? 1 : 2 ? true : false;
+export type Equals<X, Y> = (() => X extends Y ? 1 : 2) extends () => Y extends X ? 1 : 2
+  ? true
+  : false;
 
 // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export type AssertTrue<_T extends true> = void;
@@ -124,8 +125,9 @@ export type Complete<T> = {
  * // error: Argument of type 'number' is not assignable to parameter of type 'string'
  * ```
  */
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- T is used as constraint for inner function's E
 export function extendsType<T>() {
-  return <E extends T>(value: E) => value;
+  return <E extends T>(value: E): E => value;
 }
 
 /**

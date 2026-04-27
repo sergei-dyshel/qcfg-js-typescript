@@ -115,7 +115,7 @@ export function buildEvents(
   if (opts?.logStream) {
     pathComponents.push(opts.logStream);
   }
-  const query = pick(opts ?? ({} as EventsQuery), "start", "end");
+  const query = pick(opts ?? {}, "start", "end");
   return build(region, pathComponents.join("/"), query);
 }
 

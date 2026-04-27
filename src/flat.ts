@@ -35,7 +35,7 @@ export function create<S extends Schema>(schema: S) {
     }
 
     _as<S1 extends Schema>(cls: Class<S1>) {
-      return new cls(cls.parse(this._obj as unknown as Object<S1>));
+      return new cls(cls.parse(this._obj as Object<S1>));
     }
 
     _equals(other: any) {
@@ -60,6 +60,7 @@ export function create<S extends Schema>(schema: S) {
         return create({ ...this.schema, ...schema });
       } else {
         // this is a class
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
         const otherCls = arg as Class<{}>;
         return create({ ...this.schema, ...otherCls.schema });
       }

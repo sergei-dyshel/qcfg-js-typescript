@@ -22,7 +22,7 @@ export function details(summary: string, body: string, open = false) {
 }
 
 function formatAttrs(attrs?: TagAttrs) {
-  let attr = Object.entries(attrs ?? ({} as TagAttrs))
+  let attr = Object.entries(attrs ?? {})
     .map(([name, value]) => {
       if (typeof value === "boolean") return value ? name : "";
       return `${name}="${value}"`;
@@ -51,7 +51,7 @@ export function link(text: string, uri: UriLike) {
 }
 
 export function copyableLink(uri: UriLike, text?: string) {
-  if (!text) text = uri.toString(true /* skipEncoding */);
+  text ??= uri.toString(true /* skipEncoding */);
   return link(text, uri) + " " + copyButton(uri.toString());
 }
 

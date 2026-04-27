@@ -110,7 +110,7 @@ export function lockFnWithTimeout(
     try {
       // lockFn returned despite cancellation, means acquired
       return await promise;
-    } catch (err) {
+    } catch {
       // ignore error
       return undefined;
     }

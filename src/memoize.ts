@@ -18,7 +18,7 @@ export function memoizeAsync<V, F extends (...args: any[]) => Awaitable<V>>(func
  *
  * NOTE: function arguments must be JSON-stringifiable for this to work
  */
-export function memoize<V, F extends (...args: any[]) => V>(func: F): F;
+export function memoize<F extends (...args: any[]) => unknown>(func: F): F;
 
 export function memoize<V>(func: (...args: any[]) => V) {
   const cache = new DefaultMapAdapter<any[], V, string>(
@@ -29,7 +29,10 @@ export function memoize<V>(func: (...args: any[]) => V) {
   return (...args: any[]) => cache.get(args);
 }
 
-export function memoizeWithExc<E, V, F extends (...args: any[]) => V>(exc: new () => E, func: F): F;
+export function memoizeWithExc<F extends (...args: any[]) => unknown>(
+  exc: new () => Error,
+  func: F,
+): F;
 
 /**
  * Like {@link memoize} but also remembers thrown exceptions of given type.

@@ -136,8 +136,8 @@ export function assertDeepEqual<T>(actual: T, expected: T) {
  *
  * Used by {@link formatError}.
  */
-export function registerErrorFormatter<E extends Error, C extends new (...args: any[]) => E>(
-  cls: C,
+export function registerErrorFormatter<E extends Error>(
+  cls: new (...args: any[]) => E,
   format: (error: E) => string,
 ) {
   errorFormatters.push({ cls, format });
@@ -171,8 +171,8 @@ export function formatError(
   return String(error);
 }
 
-export function assertNull<T>(
-  val: T | undefined | null,
+export function assertNull(
+  val: unknown,
   message = "Value is not null/undefined",
   ...data: unknown[]
 ) {

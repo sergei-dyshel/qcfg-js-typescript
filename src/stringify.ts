@@ -1,6 +1,6 @@
 export function stringify(x: unknown): string {
   if (typeof x === "object") return stringifyObject(x);
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands, @typescript-eslint/no-base-to-string
   return "" + x;
 }
 

@@ -107,7 +107,7 @@ export function composeCompare<T>(...comparators: Array<(a: T, b: T) => number>)
   };
 }
 
-export function lexicographicCompare<T, V>(...keys: Array<(_: T) => V>) {
+export function lexicographicCompare<T>(...keys: Array<(_: T) => unknown>) {
   return (a: T, b: T) => {
     for (const key of keys) {
       const cmp = defaultCompare(key(a), key(b));
@@ -139,7 +139,7 @@ export function arrayEquals<T>(
 }
 
 export function sortUniq<T>(arr: T[], compareFn?: (a: T, b: T) => number) {
-  if (!compareFn) compareFn = defaultCompare<T>;
+  compareFn ??= defaultCompare<T>;
   arr.sort(compareFn);
   for (let i = arr.length - 1; i > 0; i--) {
     if (compareFn(arr[i], arr[i - 1]) === 0) arr.splice(i, 1);

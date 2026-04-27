@@ -1,4 +1,3 @@
-import { decode } from "node:querystring";
 import { URI } from "vscode-uri";
 import { filterObjectEntries, mapValues } from "./object";
 
@@ -29,7 +28,6 @@ export interface UriLike {
  */
 export function decodeUriQuery(queryStr: string) {
   return Object.fromEntries(new URLSearchParams(queryStr));
-  decode;
 }
 
 export type UriQuery = Record<string, string | number | boolean>;

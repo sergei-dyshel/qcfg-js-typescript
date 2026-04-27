@@ -83,6 +83,7 @@ export function parseNumber(s: string | undefined, default_?: number): number | 
 
 export function buildFuzzyPattern(query: string): string {
   const goodChars = query.replaceAll(/\W/g, "");
+  // eslint-disable-next-line @typescript-eslint/no-misused-spread -- only ASCII characters expected
   return [...goodChars].join(".*");
 }
 
@@ -92,6 +93,7 @@ export function fuzzyMatch(text: string, query: string): boolean {
 
 export function buildAbbrevPattern(query: string): string {
   const goodChars = query.replaceAll(/\W/g, "");
+  // eslint-disable-next-line @typescript-eslint/no-misused-spread -- only ASCII characters expected
   const midPattern = [...goodChars]
     .map((ch) => {
       if (/[A-Za-z]/.test(ch)) {
@@ -229,7 +231,7 @@ const memoizedBuildTemplateFunction = memoizeWithExc(TemplateLiteralError, build
 export function expandTemplateLiteral(template: string, vars: Record<string, unknown>): string {
   const func = memoizedBuildTemplateFunction(Object.keys(vars), template);
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
     return func(...Object.values(vars));
   } catch (err) {
     throw new TemplateLiteralError(`Error expanding template '${template}': ${String(err)}`);

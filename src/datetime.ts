@@ -5,8 +5,8 @@ export const DEFAULT_DATE_FORMAT_STR = "yyyy-MM-dd HH:mm";
 /**
  * Like {@link format} but with default format string ({@link DEFAULT_DATE_FORMAT_STR})}
  */
-export function formatDate<DateType extends Date>(
-  date: DateType | number | string,
+export function formatDate(
+  date: Date | number | string,
   formatStr?: string,
   options?: FormatOptions,
 ): string {

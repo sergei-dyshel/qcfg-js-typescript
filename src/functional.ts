@@ -4,7 +4,7 @@ export function pipe2<F1 extends AnyFunction, F2 extends UnaryFunction<ReturnTyp
   f1: F1,
   f2: F2,
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   return (...args: Parameters<F1>) => f2(f1(...args)) as ReturnType<F2>;
 }
 
