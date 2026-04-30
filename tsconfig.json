@@ -28,6 +28,8 @@
     "strictPropertyInitialization": true,
     "noFallthroughCasesInSwitch": true,
     "experimentalDecorators": true,
+    // strict distinction between value and type imports
+    "verbatimModuleSyntax": true,
     "plugins": [
       // { "name": "eslint-plugin-export-scope", "strictMode": false },
       { "name": "eslint-plugin-import-access" }
