@@ -1,9 +1,24 @@
+import { mapAsync, zipArrays } from "./array";
+import { objectFromEntries } from "./object";
+
 export function setEqual<T>(set1: Set<T>, set2: Set<T>) {
   return set1.symmetricDifference(set2).size === 0;
 }
 
 export function setAddFrom<T>(set: Set<T>, from: Iterable<T>) {
   for (const value of from) set.add(value);
+}
+
+/**
+ * Map set with string keys to an object with those keys and mapped values.
+ */
+export async function mapSetToObjAsync<T extends string, R>(
+  set: Set<T>,
+  fn: (value: T) => Promise<R>,
+) {
+  const keys = [...set];
+  const values = await mapAsync(keys, fn);
+  return objectFromEntries(zipArrays(keys, values));
 }
 
 // Copied from lib.esnext.collection.d.ts to resolve TS errors
