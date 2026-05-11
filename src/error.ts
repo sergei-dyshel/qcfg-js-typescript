@@ -225,6 +225,10 @@ export function asInstanceOf<T, C extends T>(value: T, cls: Function & { prototy
   return value as C;
 }
 
+export function failNonCritical(message: string): never {
+  throw new NonCriticalError(message);
+}
+
 /**
  * Similar to {@link assert} but thorws non-critical exception that should be presented to user in
  * non-disruptive way.
