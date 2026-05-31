@@ -18,3 +18,4 @@ export const STAR = "⭐";
 export const BABY_CHICK = "🐥";
 export const EM_SPACE = " "; // just a whitespace
 export const CROSS_MARK = "❌";
+export const WRITING_HAND = "✍️";

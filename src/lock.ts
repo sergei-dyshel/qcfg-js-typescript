@@ -1,4 +1,5 @@
 import { Mutex as AsyncMutex, type MutexInterface } from "async-mutex";
+import type { LockFn, LockFnHandle } from "./lock-fn";
 import { DefaultMap } from "./map";
 import type { Awaitable } from "./types";
 
@@ -37,5 +38,14 @@ export class LockMap<K> {
 
   with<T>(key: K, f: () => Promise<T>) {
     return this.map.get(key).with(f);
+  }
+}
+
+export class LockFnMap<K, H extends LockFnHandle = LockFnHandle> {
+  private readonly map = new DefaultMap<K, LockFn<H>>((key) => this.factory(key));
+  constructor(private readonly factory: (_: K) => LockFn<H>) {}
+
+  get(key: K) {
+    return this.map.get(key)();
   }
 }

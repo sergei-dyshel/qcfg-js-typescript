@@ -351,3 +351,12 @@ export function sparseArray<T>(elements: Iterable<[number, T]>): T[] {
   for (const [index, value] of elements) arr[index] = value;
   return arr;
 }
+
+/**
+ * Find duplicates in array.
+ *
+ * NOTE: Compares using `===` operator (`indexOf`)..
+ */
+export function arrayFindDuplicates<T>(array: readonly T[]) {
+  return array.filter((value, index) => array.indexOf(value) !== index);
+}
