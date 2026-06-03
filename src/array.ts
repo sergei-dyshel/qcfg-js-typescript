@@ -360,3 +360,12 @@ export function sparseArray<T>(elements: Iterable<[number, T]>): T[] {
 export function arrayFindDuplicates<T>(array: readonly T[]) {
   return array.filter((value, index) => array.indexOf(value) !== index);
 }
+
+/**
+ * Return array without duplicates.
+ *
+ * NOTE: Compares using `===` operator (`indexOf`)..
+ */
+export function deduplicateArray<T>(array: readonly T[]) {
+  return array.filter((value, index) => array.indexOf(value) === index);
+}
