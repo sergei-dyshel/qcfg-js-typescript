@@ -87,6 +87,18 @@ export function div(attrs: { class?: "column" | "row" } & TagAttrs, inner: strin
   return tag("div", attrs, inner, padded);
 }
 
+export function head(inner: string) {
+  return tag("head", {}, inner);
+}
+
+export function body(inner: string) {
+  return tag("body", {}, inner);
+}
+
+export function style(inner: string) {
+  return tag("style", {}, inner);
+}
+
 /**
  * Button to copy text to clipboard.
  *
