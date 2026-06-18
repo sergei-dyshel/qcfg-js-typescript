@@ -27,6 +27,7 @@ Before adding a new utility function, check if it already exists here. Browse th
 - Use the shared `tsconfig.json` exported by this package as the base for all dependent packages.
 - Prefer pure functions and immutable patterns where practical.
 - Use `zod` for runtime validation schemas (re-exported from this package).
+- This package hosts **proxy modules** for environment-agnostic third-party packages (e.g., [`src/zod.ts`](src/zod.ts) wraps `zod` and friends). Leaf packages must import these symbols through the proxy, never directly from the third-party package — see the workspace-wide rule in the root [AGENTS.md](../../AGENTS.md) (`Third-party dependencies — proxy modules`).
 - When writing test files, use the `*.test.ts` suffix and the testing utilities provided by this package — see [testing.md](testing.md) for conventions and assertion helpers.
 
 ## Adding new code
